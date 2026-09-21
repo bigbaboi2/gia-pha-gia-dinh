@@ -8,17 +8,34 @@
   :root {
     --gold: #C9A84C;
     --gold-light: #E8C97A;
-    --gold-dim: #7A6228;
-    --ink: #1A1610;
+    --gold-dim: #8C7335;
+    --ink: #16130E;
     --paper: #F7F2E8;
     --paper-dark: #EDE6D6;
     --paper-mid: #F0EAD8;
     --red-accent: #8B2020;
     --text-main: #2A2318;
     --text-soft: #6B5E3E;
-    --line: #C9A84C55;
+    --tree-line: #C9A84C;
+    --node-bg: #FFFAF0;
+    --node-border: #E2D2A5;
     --sidebar-w: 300px;
-    --font-ui: Arial, "Segoe UI", Tahoma, sans-serif;
+    --font-ui: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+
+  body.theme-light {
+    --ink: #EAE3D2;
+    --gold: #A07820;
+    --gold-light: #C9A84C;
+    --gold-dim: #7A6020;
+    --paper: #FAF7F0;
+    --paper-dark: #E4DCC8;
+    --paper-mid: #ECE5D4;
+    --text-main: #1F1A12;
+    --text-soft: #5C4F33;
+    --tree-line: #A07820;
+    --node-bg: #FFFFFF;
+    --node-border: #D5C398;
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -30,33 +47,51 @@
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+    overflow-x: hidden;
   }
 
   /* ── HEADER ── */
   header {
     background: var(--ink);
     border-bottom: 1px solid var(--gold-dim);
-    padding: 16px 28px;
+    padding: 12px 20px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 16px;
+    gap: 12px;
     flex-wrap: wrap;
     position: sticky; top: 0; z-index: 100;
   }
-  .header-title {
-    font-family: var(--font-ui);
-    font-size: 1.65rem;
+  .header-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .sidebar-toggle-btn {
+    background: none;
+    border: 1px solid var(--gold-dim);
+    border-radius: 6px;
     color: var(--gold);
-    letter-spacing: 0.04em;
+    padding: 6px 11px;
+    font-size: 1.15rem;
+    cursor: pointer;
+    line-height: 1;
+    transition: all .15s;
+  }
+  .sidebar-toggle-btn:hover { background: rgba(201,168,76,0.15); border-color: var(--gold); }
+
+  .header-title {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--gold);
+    letter-spacing: 0.03em;
     line-height: 1.1;
   }
   .header-title small {
     display: block;
-    font-size: 0.75rem;
-    font-family: var(--font-ui);
+    font-size: 0.72rem;
     color: var(--gold-dim);
-    letter-spacing: 0.08em;
+    letter-spacing: 0.06em;
     font-weight: 400;
     margin-top: 2px;
   }
@@ -65,151 +100,146 @@
     align-items: center;
     gap: 8px;
     flex: 1;
-    max-width: 360px;
+    max-width: 320px;
   }
   .header-search input {
-    flex: 1;
-    background: #2A2318;
+    width: 100%;
+    background: rgba(255,255,255,0.08);
     border: 1px solid var(--gold-dim);
     border-radius: 6px;
-    color: var(--paper);
+    color: var(--gold-light);
     padding: 7px 12px;
-    font-family: var(--font-ui);
     font-size: 0.85rem;
     outline: none;
     transition: border-color .2s;
   }
+  body.theme-light .header-search input {
+    background: #FFF;
+    color: var(--text-main);
+  }
   .header-search input:focus { border-color: var(--gold); }
-  .header-search input::placeholder { color: var(--gold-dim); }
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
 
+  /* ── BUTTONS ── */
   .btn {
-    background: none;
+    background: rgba(201,168,76,0.1);
     border: 1px solid var(--gold-dim);
-    border-radius: 6px;
     color: var(--gold);
+    border-radius: 6px;
     padding: 7px 14px;
-    font-family: var(--font-ui);
     font-size: 0.82rem;
-    cursor: pointer;
-    transition: background .15s, border-color .15s;
-    white-space: nowrap;
-  }
-  .btn:hover { background: #2A2318; border-color: var(--gold); }
-  .btn.primary {
-    background: var(--gold);
-    color: var(--ink);
-    border-color: var(--gold);
     font-weight: 600;
+    cursor: pointer;
+    transition: all .15s;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+    line-height: 1.2;
   }
-  .btn.primary:hover { background: var(--gold-light); }
-  .btn.danger { border-color: var(--red-accent); color: var(--red-accent); }
-  .btn.danger:hover { background: #2A1010; }
+  .btn:hover { background: var(--gold); color: var(--ink); border-color: var(--gold); }
+  .btn.primary { background: var(--gold); color: #16130E; border-color: var(--gold); }
+  .btn.primary:hover { background: var(--gold-light); color: #16130E; }
+  .btn.danger { background: rgba(180,40,40,0.15); border-color: #A33; color: #E55; }
+  .btn.danger:hover { background: #A33; color: #FFF; }
+  .btn-icon-only { padding: 6px 10px; font-size: 1rem; }
 
   /* ── LAYOUT ── */
   .app-body {
     display: flex;
     flex: 1;
-    min-height: 0;
+    min-height: calc(100vh - 65px);
+    position: relative;
   }
-
-  /* ── SIDEBAR ── */
   aside {
     width: var(--sidebar-w);
-    background: #120F09;
+    background: var(--ink);
     border-right: 1px solid var(--gold-dim);
     display: flex;
     flex-direction: column;
     flex-shrink: 0;
-    overflow-y: auto;
+    transition: width .25s cubic-bezier(0.4, 0, 0.2, 1), opacity .2s;
+    overflow: hidden;
+  }
+  aside.collapsed {
+    width: 0 !important;
+    border-right: none;
+    opacity: 0;
+    pointer-events: none;
   }
   .sidebar-section {
-    padding: 18px 16px 8px;
-    font-size: 0.7rem;
+    padding: 14px 18px 6px;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
     color: var(--gold-dim);
-    letter-spacing: 0.12em;
     text-transform: uppercase;
-    font-weight: 600;
   }
   .tree-btn {
-    display: flex;
-    align-items: flex-start;
-    gap: 10px;
-    width: 100%;
     background: none;
     border: none;
     border-left: 3px solid transparent;
-    padding: 10px 16px;
-    cursor: pointer;
+    color: var(--gold-light);
+    padding: 12px 18px;
     text-align: left;
-    transition: background .15s, border-color .15s;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transition: all .15s;
+    width: 100%;
   }
-  .tree-btn:hover { background: #1E1810; }
+  body.theme-light .tree-btn { color: var(--text-main); }
+  .tree-btn:hover { background: rgba(201,168,76,0.12); color: var(--gold); }
   .tree-btn.active {
-    background: #1E1810;
+    background: rgba(201,168,76,0.2);
     border-left-color: var(--gold);
+    color: var(--gold);
+    font-weight: 700;
   }
-  .tree-btn-icon {
-    font-size: 1.2rem;
-    line-height: 1;
-    flex-shrink: 0;
-    margin-top: 1px;
-  }
-  .tree-btn-info { flex: 1; min-width: 0; }
-  .tree-btn-name {
-    font-size: 0.85rem;
-    font-weight: 600;
-    color: var(--paper);
-    line-height: 1.2;
-  }
-  .tree-btn.active .tree-btn-name { color: var(--gold); }
-  .tree-btn-sub {
-    font-size: 0.72rem;
-    color: var(--gold-dim);
-    margin-top: 2px;
-    line-height: 1.3;
-  }
+  .tree-btn-icon { font-size: 1.25rem; flex-shrink: 0; }
+  .tree-btn-name { font-size: 0.88rem; line-height: 1.25; }
+  .tree-btn-sub { font-size: 0.72rem; color: var(--gold-dim); margin-top: 2px; }
 
-  .sidebar-divider {
-    border: none;
-    border-top: 1px solid #2A2318;
-    margin: 8px 0;
-  }
-
+  .sidebar-divider { border: none; border-top: 1px solid rgba(201,168,76,0.2); margin: 6px 18px; }
   .sidebar-bottom {
     margin-top: auto;
-    padding: 12px 16px;
-    border-top: 1px solid #2A2318;
+    padding: 14px 18px;
+    border-top: 1px solid rgba(201,168,76,0.2);
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: 8px;
   }
 
-  /* ── MAIN ── */
   main {
     flex: 1;
     display: flex;
     flex-direction: column;
-    overflow: hidden;
+    background: var(--paper);
+    min-width: 0;
+    overflow-x: auto;
   }
-
   .view-tabs {
-    display: flex;
-    background: #120F09;
+    background: var(--ink);
     border-bottom: 1px solid var(--gold-dim);
-    padding: 0 20px;
-    gap: 0;
+    display: flex;
+    padding: 0 16px;
+    gap: 4px;
   }
   .view-tab {
     background: none;
     border: none;
-    border-bottom: 2px solid transparent;
+    border-bottom: 3px solid transparent;
     color: var(--gold-dim);
-    padding: 12px 18px;
-    font-family: var(--font-ui);
-    font-size: 0.83rem;
-    font-weight: 500;
+    padding: 10px 16px;
+    font-size: 0.85rem;
+    font-weight: 600;
     cursor: pointer;
-    transition: color .15s, border-color .15s;
+    transition: all .15s;
     display: flex;
     align-items: center;
     gap: 6px;
@@ -223,115 +253,114 @@
   .content-area {
     flex: 1;
     overflow: auto;
-    background: var(--paper);
+    padding: 24px 32px 64px;
     position: relative;
   }
 
-  /* ── TREE VIEW ── */
-  .tree-canvas {
-    padding: 34px 32px 64px;
+  /* ── TREE STRUCTURE & CONNECTING LINES ── */
+  .tree-wrap {
+    font-size: 1rem;
     min-width: max-content;
+  }
+  .tree-root-bar {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 24px;
   }
   .tree-root-label {
     display: inline-flex;
     align-items: center;
     gap: 8px;
     background: var(--gold);
-    color: var(--ink);
+    color: #16130E;
     border-radius: 8px;
-    padding: 12px 20px;
-    font-family: var(--font-ui);
-    font-size: 1.25rem;
-    font-weight: 600;
-    margin-bottom: 4px;
-    cursor: pointer;
+    padding: 10px 18px;
+    font-size: 1.15rem;
+    font-weight: 700;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
   }
-
-  /* Custom tree rendering */
-  .tree-wrap { font-size: 1rem; }
 
   ul.tree-ul {
     list-style: none;
-    padding-left: 0;
+    padding: 0;
     margin: 0;
   }
+
+  /* Sub-branches (children ul) */
   ul.tree-ul ul.tree-ul {
-    padding-left: 42px;
+    padding-left: 36px;
     position: relative;
   }
 
+  /* Li node container */
   li.tree-li {
     position: relative;
-    padding: 6px 0;
-  }
-  li.tree-li > ul.tree-ul > li.tree-li::before {
-    content: '';
-    position: absolute;
-    left: -24px;
-    top: 24px;
-    width: 24px;
-    border-top: 3px solid var(--gold);
-    opacity: 0.55;
-  }
-  /* Mỗi đoạn dọc chỉ nối tới nút kế tiếp, không kéo qua nhánh cuối. */
-  li.tree-li > ul.tree-ul > li.tree-li:not(:last-child)::after {
-    content: '';
-    position: absolute;
-    left: -24px;
-    top: 24px;
-    bottom: -30px;
-    border-left: 3px solid var(--gold);
-    opacity: 0.55;
+    list-style: none;
+    padding: 5px 0;
   }
 
-  .node {
+  /* 1. Vertical spine connecting siblings inside children ul */
+  ul.tree-ul ul.tree-ul > li.tree-li::after {
+    content: '';
+    position: absolute;
+    left: -24px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: var(--tree-line);
+    opacity: 0.65;
+  }
+  /* First sibling extends up to link with parent */
+  ul.tree-ul ul.tree-ul > li.tree-li:first-child::after {
+    top: -8px;
+  }
+  /* Last sibling stops at its horizontal branch */
+  ul.tree-ul ul.tree-ul > li.tree-li:last-child::after {
+    bottom: calc(100% - 20px);
+  }
+  /* Only child */
+  ul.tree-ul ul.tree-ul > li.tree-li:only-child::after {
+    top: -8px;
+    bottom: calc(100% - 20px);
+  }
+
+  /* 2. Horizontal branch from vertical spine to child node card */
+  ul.tree-ul ul.tree-ul > li.tree-li::before {
+    content: '';
+    position: absolute;
+    left: -24px;
+    top: 20px;
+    width: 24px;
+    height: 2px;
+    background: var(--tree-line);
+    opacity: 0.65;
+  }
+
+  /* 3. Vertical stem from Parent's toggle area down to its children */
+  .tree-parent-stem {
+    display: block;
+    width: 2px;
+    height: 10px;
+    background: var(--tree-line);
+    opacity: 0.65;
+    margin-left: 11px; /* aligns with center of 24px toggle button */
+  }
+
+  /* ── NODE CARD ── */
+  .node-row {
     display: inline-flex;
     align-items: center;
-    gap: 8px;
-    padding: 9px 13px;
-    border-radius: 8px;
-    background: #fffaf0;
-    border: 1px solid #e4d3a3;
-    box-shadow: 0 1px 3px rgba(40, 29, 8, 0.08);
-    cursor: pointer;
-    transition: background .15s, border-color .15s, box-shadow .15s;
-    position: relative;
-    user-select: none;
+    gap: 6px;
   }
-  .node:hover { background: #fff0c7; border-color: var(--gold); }
-  .node.highlighted { background: #FFF3CD; outline: 2px solid var(--gold); }
-  .node.me { background: var(--gold); color: var(--ink); font-weight: 700; }
-  .node.me:hover { background: var(--gold-light); }
-  .node.deceased {
-    background: #eee8dc;
-    border-color: #b8aa8b;
-  }
-  .node-deceased {
-    color: #766a55;
-    font-size: 0.76rem;
-    font-weight: 600;
-    white-space: nowrap;
-  }
-
-  .node-icon { font-size: 1.05rem; flex-shrink: 0; }
-  .node-name { font-weight: 650; color: var(--text-main); line-height: 1.25; font-size: 1.02rem; }
-  .node.me .node-name { color: var(--ink); }
-  .node-role {
-    font-size: 0.78rem;
-    color: var(--text-soft);
-    background: var(--paper-dark);
-    padding: 1px 5px;
-    border-radius: 3px;
-    white-space: nowrap;
-  }
-  .node.me .node-role { background: var(--gold-dim); color: var(--paper); }
-
   .toggle-btn {
-    background: none;
+    background: var(--node-bg);
     border: 1px solid var(--gold-dim);
-    border-radius: 3px;
-    width: 24px; height: 24px;
-    font-size: 0.85rem;
+    border-radius: 4px;
+    width: 24px;
+    height: 24px;
+    font-size: 0.95rem;
+    font-weight: 700;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -339,95 +368,232 @@
     color: var(--gold-dim);
     flex-shrink: 0;
     line-height: 1;
+    transition: all .15s;
+    user-select: none;
   }
-  .toggle-btn:hover { border-color: var(--gold); color: var(--gold); }
+  .toggle-btn:hover { border-color: var(--gold); color: var(--gold); background: var(--paper-dark); }
+  .toggle-spacer {
+    display: inline-block;
+    width: 24px;
+    flex-shrink: 0;
+  }
+
+  .node {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 12px;
+    border-radius: 8px;
+    background: var(--node-bg);
+    border: 1px solid var(--node-border);
+    box-shadow: 0 1px 4px rgba(40, 29, 8, 0.08);
+    cursor: pointer;
+    transition: all .15s;
+    user-select: none;
+    position: relative;
+  }
+  .node:hover {
+    background: #FFF4D4;
+    border-color: var(--gold);
+    transform: translateY(-1px);
+    box-shadow: 0 3px 8px rgba(201,168,76,0.2);
+  }
+  .node.highlighted {
+    background: #FFE8A3 !important;
+    outline: 2px solid var(--gold);
+  }
+  .node.me {
+    background: var(--gold);
+    color: #16130E;
+    font-weight: 700;
+    border-color: var(--gold);
+  }
+  .node.me .node-name { color: #16130E; }
+  .node.me .node-role { background: rgba(0,0,0,0.15); color: #16130E; }
+  .node.deceased {
+    background: #EFE9DD;
+    border-color: #C7BBA3;
+    opacity: 0.92;
+  }
+  .node-icon { font-size: 1.05rem; flex-shrink: 0; }
+  .gender-m { color: #2563AB; }
+  .gender-f { color: #A6284C; }
+  .node-name {
+    font-weight: 650;
+    color: var(--text-main);
+    font-size: 0.96rem;
+    line-height: 1.2;
+  }
+  .node-spouse {
+    font-size: 0.78rem;
+    color: var(--text-soft);
+    background: var(--paper-dark);
+    padding: 1px 6px;
+    border-radius: 4px;
+    margin-left: 2px;
+  }
+  .node-deceased-tag {
+    color: #6E5D46;
+    font-size: 0.72rem;
+    font-weight: 600;
+    background: rgba(110, 93, 70, 0.12);
+    padding: 1px 6px;
+    border-radius: 4px;
+    border: 1px solid rgba(110, 93, 70, 0.2);
+  }
+  .node-role {
+    font-size: 0.72rem;
+    color: var(--text-soft);
+    background: var(--paper-dark);
+    padding: 1px 5px;
+    border-radius: 4px;
+    white-space: nowrap;
+  }
+  .btn-add-child {
+    background: none;
+    border: 1px dashed var(--gold-dim);
+    border-radius: 4px;
+    width: 22px;
+    height: 22px;
+    font-size: 0.9rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--gold-dim);
+    cursor: pointer;
+    opacity: 0.6;
+    transition: all .15s;
+    line-height: 1;
+  }
+  .btn-add-child:hover { opacity: 1; border-color: var(--gold); color: var(--gold); background: rgba(201,168,76,0.1); }
 
   /* ── TABLE VIEW ── */
-  .table-wrap {
-    padding: 24px;
-  }
-  .table-wrap table {
+  .table-wrap { padding: 8px 0; overflow-x: auto; }
+  table {
     width: 100%;
     border-collapse: collapse;
-    font-size: 0.83rem;
+    font-size: 0.84rem;
+    background: var(--node-bg);
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
   }
-  .table-wrap th {
+  th {
     background: var(--ink);
     color: var(--gold);
     padding: 10px 14px;
     text-align: left;
     font-weight: 600;
     font-size: 0.75rem;
-    letter-spacing: 0.06em;
-    white-space: nowrap;
+    letter-spacing: 0.05em;
   }
-  .table-wrap td {
-    padding: 9px 14px;
+  td {
+    padding: 10px 14px;
     border-bottom: 1px solid var(--paper-dark);
     color: var(--text-main);
-    vertical-align: middle;
   }
-  .table-wrap tr:hover td { background: var(--paper-dark); }
-  .table-wrap tr.me-row td { background: #FFF8E1; font-weight: 600; }
-  .generation-badge {
-    display: inline-block;
-    background: var(--paper-dark);
-    border: 1px solid var(--gold-dim);
-    border-radius: 4px;
-    padding: 1px 7px;
-    font-size: 0.7rem;
-    color: var(--text-soft);
-  }
-  .gender-m { color: #2563AB; }
-  .gender-f { color: #9B2040; }
+  tr:hover td { background: var(--paper-mid); }
+  tr.me-row td { background: #FFF9E6; font-weight: 600; }
 
-  /* ── EDIT MODAL ── */
+  /* ── INFO PANEL ── */
+  .info-panel {
+    position: fixed;
+    right: 0; top: 0; bottom: 0;
+    width: 310px;
+    background: var(--ink);
+    border-left: 1px solid var(--gold-dim);
+    z-index: 200;
+    transform: translateX(100%);
+    transition: transform .25s ease;
+    display: flex;
+    flex-direction: column;
+    box-shadow: -4px 0 20px rgba(0,0,0,0.4);
+  }
+  .info-panel.open { transform: translateX(0); }
+  .info-panel-header {
+    padding: 16px 20px;
+    border-bottom: 1px solid rgba(201,168,76,0.25);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .info-panel-name {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--gold);
+  }
+  .info-panel-body {
+    padding: 18px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    overflow-y: auto;
+    flex: 1;
+  }
+  .info-row { display: flex; flex-direction: column; gap: 2px; }
+  .info-key { font-size: 0.68rem; font-weight: 700; color: var(--gold-dim); letter-spacing: 0.08em; text-transform: uppercase; }
+  .info-val { font-size: 0.88rem; color: var(--paper); }
+  body.theme-light .info-val { color: var(--text-main); }
+  .info-panel-footer {
+    padding: 14px 20px;
+    border-top: 1px solid rgba(201,168,76,0.25);
+    display: flex;
+    gap: 8px;
+  }
+
+  /* ── MODALS & OVERLAYS ── */
   .overlay {
     position: fixed; inset: 0;
-    background: rgba(0,0,0,0.7);
-    z-index: 200;
+    background: rgba(0,0,0,0.75);
+    backdrop-filter: blur(2px);
+    z-index: 500;
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 20px;
+    opacity: 1;
+    transition: opacity .2s;
   }
-  .overlay.hidden { display: none; }
-
+  .overlay.hidden { display: none; opacity: 0; }
   .modal {
     background: var(--paper);
+    border: 1px solid var(--gold-dim);
     border-radius: 12px;
     width: 100%;
-    max-width: 540px;
+    max-width: 520px;
     max-height: 90vh;
     overflow-y: auto;
     box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    display: flex;
+    flex-direction: column;
   }
   .modal-header {
     background: var(--ink);
     color: var(--gold);
-    padding: 16px 20px;
-    border-radius: 12px 12px 0 0;
+    padding: 14px 20px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    font-family: var(--font-ui);
     font-size: 1.1rem;
+    font-weight: 700;
   }
-  .modal-body { padding: 20px; display: flex; flex-direction: column; gap: 14px; }
-  .form-group { display: flex; flex-direction: column; gap: 5px; }
-  .form-label {
-    font-size: 0.75rem;
-    font-weight: 600;
-    color: var(--text-soft);
-    letter-spacing: 0.04em;
-  }
-  .form-input, .form-select {
+  .modal-body { padding: 20px; display: flex; flex-direction: column; gap: 12px; }
+  .modal-footer {
+    padding: 14px 20px;
+    border-top: 1px solid var(--paper-dark);
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
     background: var(--paper-mid);
+  }
+  .form-group { display: flex; flex-direction: column; gap: 4px; }
+  .form-label { font-size: 0.74rem; font-weight: 700; color: var(--text-soft); letter-spacing: 0.04em; }
+  .form-input, .form-select {
+    background: var(--node-bg);
     border: 1px solid var(--paper-dark);
     border-radius: 6px;
     padding: 8px 12px;
-    font-family: var(--font-ui);
-    font-size: 0.85rem;
+    font-size: 0.88rem;
     color: var(--text-main);
     outline: none;
     transition: border-color .15s;
@@ -439,17 +605,55 @@
     display: flex;
     align-items: center;
     gap: 8px;
-    min-height: 38px;
     font-size: 0.85rem;
-    color: var(--text-main);
+    cursor: pointer;
   }
   .form-check input { width: 18px; height: 18px; accent-color: var(--gold); }
-  .modal-footer {
-    padding: 16px 20px;
-    border-top: 1px solid var(--paper-dark);
+
+  /* ── CROSS-BRANCH SYNC ── */
+  .sync-person-box {
+    background: rgba(201, 168, 76, 0.08);
+    border: 1px dashed var(--gold-dim);
+    border-radius: 8px;
+    padding: 10px 14px;
     display: flex;
-    justify-content: flex-end;
+    flex-direction: column;
     gap: 8px;
+    margin-top: 4px;
+  }
+  .sync-person-box.hidden { display: none; }
+  .sync-person-title {
+    font-size: 0.76rem;
+    font-weight: 700;
+    color: var(--gold);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+  .sync-person-list {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .sync-person-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.84rem;
+    color: var(--text-main);
+    cursor: pointer;
+    background: rgba(255,255,255,0.4);
+    padding: 6px 10px;
+    border-radius: 6px;
+    border: 1px solid var(--node-border);
+  }
+  .sync-person-item input { width: 16px; height: 16px; accent-color: var(--gold); }
+  .sync-person-help {
+    font-size: 0.72rem;
+    color: var(--text-soft);
+    line-height: 1.4;
   }
 
   /* ── SEARCH RESULTS ── */
@@ -461,209 +665,87 @@
     padding: 16px 24px;
     border-bottom: 2px solid var(--gold);
     display: none;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.1);
   }
   .search-results.active { display: block; }
-  .search-result-title {
-    font-size: 0.75rem;
-    color: var(--text-soft);
-    margin-bottom: 10px;
-    letter-spacing: 0.05em;
-  }
+  .search-result-title { font-size: 0.72rem; font-weight: 700; color: var(--text-soft); margin-bottom: 8px; }
   .search-result-list { display: flex; flex-wrap: wrap; gap: 8px; }
   .search-result-chip {
-    background: var(--paper-dark);
-    border: 1px solid var(--gold-dim);
+    background: var(--node-bg);
+    border: 1px solid var(--node-border);
     border-radius: 20px;
     padding: 5px 12px;
-    font-size: 0.8rem;
+    font-size: 0.82rem;
     cursor: pointer;
     color: var(--text-main);
-    transition: background .15s;
+    transition: all .15s;
   }
-  .search-result-chip:hover { background: var(--gold); color: var(--ink); }
-  .search-result-chip span { color: var(--text-soft); font-size: 0.72rem; margin-left: 5px; }
+  .search-result-chip:hover { background: var(--gold); color: #16130E; border-color: var(--gold); }
 
   /* ── TOAST ── */
   .toast {
     position: fixed;
     bottom: 24px; right: 24px;
-    background: var(--ink);
+    background: #16130E;
     color: var(--gold);
     border: 1px solid var(--gold-dim);
     border-radius: 8px;
     padding: 10px 18px;
-    font-size: 0.83rem;
-    z-index: 300;
+    font-size: 0.85rem;
+    font-weight: 600;
+    z-index: 999;
     opacity: 0;
     transform: translateY(10px);
-    transition: opacity .3s, transform .3s;
+    transition: all .25s ease;
     pointer-events: none;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.3);
   }
   .toast.show { opacity: 1; transform: translateY(0); }
 
-  /* ── INFO PANEL ── */
-  .info-panel {
-    position: fixed;
-    right: 0; top: 57px; bottom: 0;
-    width: 280px;
-    background: #120F09;
-    border-left: 1px solid var(--gold-dim);
-    z-index: 80;
-    transform: translateX(100%);
-    transition: transform .25s;
-    display: flex;
-    flex-direction: column;
-    overflow-y: auto;
-  }
-  .info-panel.open { transform: translateX(0); }
-  .info-panel-header {
-    padding: 16px;
-    border-bottom: 1px solid #2A2318;
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: 8px;
-  }
-  .info-panel-name {
-    font-family: var(--font-ui);
-    font-size: 1.2rem;
-    color: var(--gold);
-    line-height: 1.2;
-  }
-  .info-panel-body { padding: 16px; display: flex; flex-direction: column; gap: 10px; }
-  .info-row { display: flex; flex-direction: column; gap: 2px; }
-  .info-key { font-size: 0.68rem; color: var(--gold-dim); letter-spacing: 0.08em; font-weight: 600; }
-  .info-val { font-size: 0.83rem; color: var(--paper); }
-
-  .close-btn {
-    background: none;
-    border: none;
-    color: var(--gold-dim);
-    font-size: 1.1rem;
-    cursor: pointer;
-    line-height: 1;
-    padding: 2px;
-  }
-  .close-btn:hover { color: var(--gold); }
-
-  /* Responsive: giữ đầy đủ chức năng khi mở tệp trên điện thoại. */
-  @media (max-width: 760px) {
-    header {
-      padding: 10px 12px;
-      gap: 8px;
-    }
-    .header-title {
-      width: 100%;
-      font-size: 1.25rem;
-    }
+  /* ── MOBILE RESPONSIVE ── */
+  @media (max-width: 768px) {
+    header { padding: 10px 14px; }
+    .header-title { font-size: 1.15rem; }
     .header-title small { display: none; }
-    .header-search {
-      max-width: none;
-      min-width: 0;
-    }
-    .header-search input {
-      min-height: 42px;
-      font-size: 1rem;
-    }
-    header > .btn {
-      min-height: 42px;
-      padding: 8px 12px;
-    }
-    .app-body {
-      flex-direction: column;
-      min-height: 0;
-    }
+    .header-search { max-width: none; order: 3; width: 100%; margin-top: 4px; }
     aside {
-      width: 100%;
-      height: auto;
-      max-height: none;
-      flex-direction: row;
-      align-items: stretch;
-      overflow-x: auto;
-      overflow-y: hidden;
-      border-right: none;
-      border-bottom: 1px solid var(--gold-dim);
-      scrollbar-width: thin;
-      flex-shrink: 0;
+      position: absolute;
+      top: 0; bottom: 0; left: 0;
+      z-index: 150;
+      box-shadow: 4px 0 20px rgba(0,0,0,0.5);
     }
-    .sidebar-section, .sidebar-divider { display: none; }
-    .tree-btn {
-      min-width: 164px;
-      width: auto;
-      min-height: 58px;
-      padding: 9px 10px;
-      border-left: none;
-      border-bottom: 3px solid transparent;
-      flex-shrink: 0;
-    }
-    .tree-btn.active { border-bottom-color: var(--gold); }
-    .tree-btn-icon { font-size: 1.05rem; }
-    .tree-btn-name { font-size: 0.82rem; }
-    .tree-btn-sub { display: none; }
-    .sidebar-bottom {
-      min-width: 238px;
-      margin-top: 0;
-      padding: 7px 10px;
-      border-top: none;
-      border-left: 1px solid #2A2318;
-      flex-direction: row;
-      align-items: center;
-    }
-    .sidebar-bottom .btn {
-      min-height: 42px;
-      padding: 7px 9px;
-      font-size: 0.75rem;
-    }
-    main { min-height: 0; }
-    .view-tabs { padding: 0 6px; }
-    .view-tab {
-      min-height: 44px;
-      padding: 10px 12px;
-      font-size: 0.82rem;
-    }
-    .tree-canvas { padding: 20px 16px 48px; }
-    .tree-wrap { font-size: 0.96rem; }
-    .tree-root-label {
-      padding: 10px 14px;
-      font-size: 1.05rem;
-    }
-    ul.tree-ul ul.tree-ul { padding-left: 34px; }
-    li.tree-li > ul.tree-ul > li.tree-li::before {
-      left: -20px;
-      width: 20px;
-    }
-    li.tree-li > ul.tree-ul > li.tree-li:not(:last-child)::after { left: -20px; }
-    .node { padding: 9px 11px; }
-    .node-name { font-size: 0.96rem; }
-    .table-wrap { padding: 12px; overflow-x: auto; }
-    .table-wrap table { min-width: 660px; }
-    .info-panel {
-      top: 0;
-      width: min(88vw, 340px);
-      z-index: 210;
-    }
-    .overlay { padding: 10px; }
+    .content-area { padding: 16px 14px 60px; }
+    ul.tree-ul ul.tree-ul { padding-left: 28px; }
+    ul.tree-ul ul.tree-ul > li.tree-li::before { left: -18px; width: 18px; }
+    ul.tree-ul ul.tree-ul > li.tree-li::after { left: -18px; }
     .form-row { grid-template-columns: 1fr; }
-    .toast { left: 12px; right: 12px; bottom: 12px; text-align: center; }
+    .info-panel { width: 85vw; }
   }
 </style>
 </head>
 <body>
 
 <header>
-  <div class="header-title">
-    Gia Phả Gia Đình
-    <small>HỌ HOÀNG · HỌ TRẦN · HỌ PHẠM</small>
+  <div class="header-left">
+    <button class="sidebar-toggle-btn" id="sidebarToggle" onclick="toggleSidebar()" title="Đóng/Mở cột bên trái">☰</button>
+    <div class="header-title">
+      Gia Phả Gia Đình
+      <small>HỌ HOÀNG · HỌ TRẦN · HỌ PHẠM</small>
+    </div>
   </div>
   <div class="header-search">
-    <input type="text" id="searchInput" placeholder="Tìm tên người thân..." autocomplete="off">
+    <input type="text" id="searchInput" placeholder="Tìm kiếm tên người thân..." autocomplete="off">
   </div>
-  <button class="btn primary" onclick="openAddModal()">+ Thêm người</button>
+  <div class="header-actions">
+    <button class="btn btn-icon-only" id="themeBtn" onclick="toggleTheme()" title="Đổi giao diện Sáng / Tối">🌙</button>
+    <button class="btn btn-icon-only" id="cloudBtn" onclick="openSyncModal()" title="Đồng bộ Đám mây (GitHub)">☁️</button>
+    <button class="btn primary" onclick="openAddModal()">+ Thêm người</button>
+  </div>
 </header>
 
 <div class="app-body">
-  <aside>
-    <div class="sidebar-section">Gia Phả</div>
+  <aside id="sidebar">
+    <div class="sidebar-section">Nhánh Gia Phả</div>
 
     <button class="tree-btn active" onclick="selectTree('noi')" id="btn-noi">
       <div class="tree-btn-icon">🏠</div>
@@ -687,7 +769,7 @@
       <div class="tree-btn-icon">🌿</div>
       <div class="tree-btn-info">
         <div class="tree-btn-name">Họ Trần (Bên Ngoại)</div>
-        <div class="tree-btn-sub">Cụ Đoàn Phúc → Ông Tiêm → các nhánh sau</div>
+        <div class="tree-btn-sub">Cụ Đoàn Phúc → Ông Tiêm → các nhánh</div>
       </div>
     </button>
 
@@ -695,13 +777,13 @@
       <div class="tree-btn-icon">🌸</div>
       <div class="tree-btn-info">
         <div class="tree-btn-name">Họ Phạm (Bà Ngoại)</div>
-        <div class="tree-btn-sub">Cụ Phó Quế → Bà Thành → các nhánh sau</div>
+        <div class="tree-btn-sub">Cụ Phó Quế → Bà Thành → các nhánh</div>
       </div>
     </button>
 
     <div class="sidebar-bottom">
-      <button class="btn" onclick="exportData()">💾 Xuất dữ liệu</button>
-      <button class="btn" onclick="document.getElementById('importFile').click()">📂 Nhập dữ liệu</button>
+      <button class="btn" onclick="exportData()">💾 Xuất file JSON</button>
+      <button class="btn" onclick="document.getElementById('importFile').click()">📂 Nhập file JSON</button>
       <input type="file" id="importFile" accept=".json" style="display:none" onchange="importData(event)">
     </div>
   </aside>
@@ -709,7 +791,7 @@
   <main>
     <div class="view-tabs">
       <button class="view-tab active" onclick="switchView('tree')" id="tab-tree">🌳 Cây Gia Phả</button>
-      <button class="view-tab" onclick="switchView('table')" id="tab-table">📋 Danh Sách</button>
+      <button class="view-tab" onclick="switchView('table')" id="tab-table">📋 Danh Sách Bảng</button>
     </div>
 
     <div class="content-area" id="contentArea">
@@ -717,7 +799,7 @@
         <div class="search-result-title">KẾT QUẢ TÌM KIẾM</div>
         <div class="search-result-list" id="searchResultList"></div>
       </div>
-      <div id="treeView" class="tree-canvas"><noscript><div style="max-width:540px;padding:22px;border:1px solid #c9a84c;background:#fffaf0;color:#2a2318;font:16px Arial,sans-serif;line-height:1.55;"><strong>Gia phả cần được mở bằng trình duyệt để hiển thị sơ đồ và cho phép chỉnh sửa.</strong><br>Trên iPhone, trong ứng dụng Tệp hãy bấm Chia sẻ, chọn <strong>Mở trong Safari</strong> hoặc <strong>Lưu vào Tệp</strong> rồi mở bằng Safari.</div></noscript></div>
+      <div id="treeView" class="tree-canvas"></div>
       <div id="tableView" class="table-wrap" style="display:none"></div>
     </div>
   </main>
@@ -727,9 +809,13 @@
 <div class="info-panel" id="infoPanel">
   <div class="info-panel-header">
     <div class="info-panel-name" id="infoPanelName">—</div>
-    <button class="close-btn" onclick="closeInfoPanel()">✕</button>
+    <button class="toggle-btn" onclick="closeInfoPanel()">✕</button>
   </div>
   <div class="info-panel-body" id="infoPanelBody"></div>
+  <div class="info-panel-footer">
+    <button class="btn primary" id="btnInfoEdit" style="flex:1;">✏️ Sửa</button>
+    <button class="btn" id="btnInfoAddChild" style="flex:1;">+ Thêm con</button>
+  </div>
 </div>
 
 <!-- Add/Edit Modal -->
@@ -737,7 +823,7 @@
   <div class="modal">
     <div class="modal-header">
       <span id="modalTitle">Thêm người thân</span>
-      <button class="close-btn" onclick="closeModal()" style="color:var(--gold-dim);font-size:1.1rem;">✕</button>
+      <button class="toggle-btn" onclick="closeModal()">✕</button>
     </div>
     <div class="modal-body">
       <div class="form-row">
@@ -746,30 +832,33 @@
           <input class="form-input" id="f_name" placeholder="Ví dụ: Hoàng Quốc Việt">
         </div>
         <div class="form-group">
-          <label class="form-label">Đại từ / danh xưng</label>
-          <input class="form-input" id="f_title" placeholder="Ví dụ: Cụ, Ông, Bà...">
+          <label class="form-label">Đại từ / Danh xưng</label>
+          <input class="form-input" id="f_title" placeholder="Ví dụ: Cụ, Ông, Bà, Bác, Chú...">
         </div>
       </div>
+
       <div class="form-row">
         <div class="form-group">
           <label class="form-label">Giới tính</label>
           <select class="form-select" id="f_gender">
-            <option value="m">Nam</option>
-            <option value="f">Nữ</option>
+            <option value="m">Nam (♂)</option>
+            <option value="f">Nữ (♀)</option>
           </select>
         </div>
         <div class="form-group">
           <label class="form-label">Năm sinh</label>
-          <input class="form-input" id="f_birth" placeholder="Ví dụ: 1950">
+          <input class="form-input" id="f_birth" placeholder="Ví dụ: 1990">
         </div>
       </div>
-      <label class="form-check">
+
+      <div class="form-check">
         <input type="checkbox" id="f_deceased">
-        <span>Đã mất</span>
-      </label>
+        <label for="f_deceased">Đã mất (†)</label>
+      </div>
+
       <div class="form-row">
         <div class="form-group">
-          <label class="form-label">Gia phả thuộc về</label>
+          <label class="form-label">Thuộc nhánh gia phả</label>
           <select class="form-select" id="f_tree">
             <option value="noi">Họ Hoàng (Bên Nội)</option>
             <option value="ba-noi">Họ Trần (Bà Nội)</option>
@@ -778,23 +867,84 @@
           </select>
         </div>
         <div class="form-group">
-          <label class="form-label">Đời / thế hệ</label>
-          <input class="form-input" id="f_gen" placeholder="Ví dụ: 1, 2, 3...">
+          <label class="form-label">Đời / Thế hệ</label>
+          <input class="form-input" id="f_gen" type="number" placeholder="1, 2, 3...">
         </div>
       </div>
+
       <div class="form-group">
-        <label class="form-label">Con của (ID cha/mẹ)</label>
-        <input class="form-input" id="f_parent" placeholder="Để trống nếu là gốc">
+        <label class="form-label">Cha / Mẹ (chọn từ danh sách hoặc nhập tên)</label>
+        <input class="form-input" id="f_parent" list="parentDatalist" placeholder="Chọn hoặc nhập tên cha/mẹ..." oninput="onParentInput(this);updateRelationLabel()" onchange="onParentInput(this);updateRelationLabel()">
+        <input type="hidden" id="f_parentId">
+        <datalist id="parentDatalist"></datalist>
       </div>
+
       <div class="form-group">
-        <label class="form-label">Ghi chú</label>
-        <input class="form-input" id="f_note" placeholder="Thêm thông tin...">
+        <label class="form-label" id="lbl_relation">Mối quan hệ với Cha / Mẹ</label>
+        <select class="form-select" id="f_relation_type">
+          <option value="">Con ruột / Mặc định</option>
+          <option value="nuoi">Con nuôi</option>
+          <option value="keGia">Kế gia / Con riêng</option>
+          <option value="ngoaiHon">Ngoài hôn nhân</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Vợ / Chồng (chọn từ danh sách hoặc nhập tên)</label>
+        <input class="form-input" id="f_spouse" list="spouseDatalist" placeholder="Nhập tên hoặc chọn vợ/chồng..." oninput="onSpouseInput(this)" onchange="onSpouseInput(this)">
+        <input type="hidden" id="f_spouseId">
+        <input type="hidden" id="f_spouseTree">
+        <datalist id="spouseDatalist"></datalist>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Ghi chú thêm</label>
+        <input class="form-input" id="f_note" placeholder="Ngày mất âm lịch, địa chỉ, thông tin thêm...">
+      </div>
+
+      <div id="syncMatchingBox" class="sync-person-box hidden">
+        <div class="sync-person-title">🔄 Đồng bộ sang người này ở nhánh khác:</div>
+        <div id="syncMatchingList" class="sync-person-list"></div>
+        <div class="sync-person-help">Tích chọn để tự động đồng bộ ngày sinh, trạng thái mất, vợ/chồng và ghi chú sang người tương ứng khi bấm Lưu.</div>
       </div>
     </div>
     <div class="modal-footer">
-      <button class="btn danger" id="btnDelete" onclick="deleteCurrentNode()" style="display:none;">Xóa</button>
+      <button class="btn danger" id="btnDelete" onclick="deleteCurrentNode()" style="display:none;margin-right:auto;">🗑️ Xóa</button>
       <button class="btn" onclick="closeModal()">Hủy</button>
-      <button class="btn primary" onclick="saveNode()">Lưu</button>
+      <button class="btn primary" onclick="saveNode()">💾 Lưu</button>
+    </div>
+  </div>
+</div>
+
+<!-- Cloud Sync Modal -->
+<div class="overlay hidden" id="syncOverlay">
+  <div class="modal">
+    <div class="modal-header">
+      <span>☁️ Đồng Bộ Đám Mây (GitHub)</span>
+      <button class="toggle-btn" onclick="closeSyncModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <p style="font-size:0.84rem;color:var(--text-soft);line-height:1.5;">
+        Dữ liệu sẽ được <strong>mã hóa AES-256</strong> bằng mật khẩu của bạn trước khi đẩy lên GitHub. Dữ liệu hoàn toàn an toàn và riêng tư!
+      </p>
+
+      <div class="form-group">
+        <label class="form-label">Mật khẩu mã hóa</label>
+        <input class="form-input" type="password" id="syncPwd" placeholder="Nhập mật khẩu bí mật của bạn...">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">GitHub Token (Fine-grained hoặc Classic)</label>
+        <input class="form-input" type="password" id="syncToken" placeholder="github_pat_... hoặc ghp_...">
+      </div>
+
+      <div style="display:flex;gap:8px;margin-top:8px;">
+        <button class="btn" onclick="pullFromGitHub()" style="flex:1;">⬇️ Tải từ GitHub</button>
+        <button class="btn primary" onclick="pushToGitHub()" style="flex:1;">⬆️ Lưu lên GitHub</button>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn" onclick="closeSyncModal()">Đóng</button>
     </div>
   </div>
 </div>
@@ -803,197 +953,228 @@
 
 <script>
 // ────────────────────────────────────────────────────────────
-// DATA — parsed from the 4 mind-map images
+// EMBEDDED DEFAULT DATA (Full 2026-09-21)
 // ────────────────────────────────────────────────────────────
 const DEFAULT_DATA = {
-  noi: {
-    label: "Họ Hoàng – Bên Nội",
-    icon: "🏠",
-    color: "#C9A84C",
-    nodes: [
-      { id:"n0",  name:"Cụ Thắc",          title:"Cụ",     gender:"m", gen:0, parent:null,  note:"Gốc của nhánh gia phả" },
-      { id:"n1",  name:"Cụ Giao 1",         title:"Cụ",     gender:"m", gen:1, parent:"n0",  note:"cụ ở 20/6 – cụ bà 14/3" },
-      { id:"n2",  name:"Ô Công",            title:"Ông",    gender:"m", gen:2, parent:"n1",  note:"" },
-      { id:"n3",  name:"Bác Thương",        title:"Bác",    gender:"m", gen:3, parent:"n2",  note:"" },
-      { id:"n4",  name:"A",                 title:"",       gender:"m", gen:4, parent:"n3",  note:"" },
-      { id:"n5",  name:"B",                 title:"",       gender:"f", gen:4, parent:"n3",  note:"" },
-      { id:"n6",  name:"Bác Thức",          title:"Bác",    gender:"m", gen:3, parent:"n2",  note:"" },
-      { id:"n7",  name:"Duy",               title:"",       gender:"m", gen:4, parent:"n6",  note:"" },
-      { id:"n8",  name:"Bảo",               title:"",       gender:"m", gen:4, parent:"n6",  note:"" },
-      { id:"n9",  name:"Huy",               title:"",       gender:"m", gen:4, parent:"n6",  note:"" },
-      { id:"n10", name:"Minh",              title:"",       gender:"m", gen:4, parent:"n6",  note:"" },
-      { id:"n11", name:"Ô Dược",            title:"Ông",    gender:"m", gen:2, parent:"n1",  note:"" },
-      { id:"n12", name:"Thược (24/4)",     title:"",       gender:"m", gen:3, parent:"n11", note:"" },
-      { id:"n13", name:"Việt",              title:"",       gender:"m", gen:4, parent:"n12", note:"", me:false },
-      { id:"n14", name:"Huyền",             title:"",       gender:"f", gen:4, parent:"n12", note:"" },
-      { id:"n15", name:"Thuộc",             title:"",       gender:"m", gen:3, parent:"n11", note:"" },
-      { id:"n16", name:"Thành",             title:"",       gender:"m", gen:4, parent:"n15", note:"" },
-      { id:"n17", name:"Đạt",               title:"",       gender:"m", gen:4, parent:"n15", note:"" },
-      { id:"n18", name:"Hằng",              title:"",       gender:"f", gen:3, parent:"n11", note:"" },
-      { id:"n19", name:"Hưng",              title:"",       gender:"m", gen:4, parent:"n18", note:"" },
-      { id:"n20", name:"Kiên",              title:"",       gender:"m", gen:4, parent:"n18", note:"" },
-      { id:"n21", name:"Bà Loan",           title:"Bà",     gender:"f", gen:2, parent:"n1",  note:"" },
-      { id:"n22", name:"Bà Lan",            title:"Bà",     gender:"f", gen:2, parent:"n1",  note:"" },
-      { id:"n23", name:"Bác Hiên",          title:"Bác",    gender:"m", gen:3, parent:"n22", note:"" },
-      { id:"n24", name:"Sỹ",                title:"",       gender:"m", gen:3, parent:"n22", note:"" },
-      { id:"n25", name:"Khiên",             title:"",       gender:"m", gen:3, parent:"n22", note:"" },
-      { id:"n26", name:"Hoa",               title:"",       gender:"f", gen:3, parent:"n22", note:"" },
-      { id:"n27", name:"Cụ Chử 2",          title:"Cụ",     gender:"m", gen:1, parent:"n0",  note:"" },
-      { id:"n28", name:"Ô Tư",              title:"Ông",    gender:"m", gen:2, parent:"n27", note:"" },
-      { id:"n29", name:"Cô Hồng",           title:"Cô",     gender:"f", gen:3, parent:"n28", note:"" },
-      { id:"n30", name:"Chú Hoan",          title:"Chú",    gender:"m", gen:3, parent:"n28", note:"" },
-      { id:"n31", name:"Ô Hoa",             title:"Ông",    gender:"m", gen:2, parent:"n27", note:"" },
-      { id:"n32", name:"Cô Nguyên",         title:"Cô",     gender:"f", gen:3, parent:"n31", note:"" },
-      { id:"n33", name:"Cô Hiên",           title:"Cô",     gender:"f", gen:3, parent:"n31", note:"" },
-      { id:"n34", name:"Chú Kiêu",          title:"Chú",    gender:"m", gen:3, parent:"n31", note:"" },
-      { id:"n35", name:"Cô Hon",            title:"Cô",     gender:"f", gen:3, parent:"n31", note:"" },
-      { id:"n36", name:"Hiếu",              title:"",       gender:"m", gen:4, parent:"n35", note:"" },
-      { id:"n37", name:"Linh",              title:"",       gender:"f", gen:4, parent:"n35", note:"" },
-      { id:"n38", name:"X",                 title:"",       gender:"m", gen:4, parent:"n35", note:"" },
-      { id:"n39", name:"Ô Chất",            title:"Ông",    gender:"m", gen:2, parent:"n27", note:"" },
-      { id:"n40", name:"Thảo",              title:"",       gender:"f", gen:3, parent:"n39", note:"" },
-      { id:"n41", name:"Thi",               title:"",       gender:"f", gen:3, parent:"n39", note:"" },
-      { id:"n42", name:"Thu",               title:"",       gender:"f", gen:3, parent:"n39", note:"" },
-      { id:"n43", name:"Bà thêm",           title:"Bà",     gender:"f", gen:2, parent:"n27", note:"" },
-      { id:"n44", name:"Bà Thơm",           title:"Bà",     gender:"f", gen:2, parent:"n27", note:"" },
-      { id:"n45", name:"Bà Thêm",           title:"Bà",     gender:"f", gen:2, parent:"n27", note:"" },
-      { id:"n46", name:"Cụ Mắc 3",          title:"Cụ",     gender:"m", gen:1, parent:"n0",  note:"" },
-      { id:"n47", name:"Ô Chung",           title:"Ông",    gender:"m", gen:2, parent:"n46", note:"" },
-      { id:"n48", name:"Chú Thủy",          title:"Chú",    gender:"m", gen:3, parent:"n47", note:"" },
+  "noi": {
+    "label": "Họ Hoàng – Bên Nội",
+    "icon": "🏠",
+    "color": "#C9A84C",
+    "nodes": [
+      {"id": "n0", "name": "Cụ Thắc", "title": "Cụ", "gender": "m", "gen": 0, "parent": null, "note": "Gốc của nhánh gia phả", "deceased": true},
+      {"id": "n1", "name": "Cụ Giao 1", "title": "Cụ", "gender": "m", "gen": 1, "parent": "n0", "note": "cụ mất 20/6 – cụ bà 14/3 âm lịch", "deceased": true},
+      {"id": "n2", "name": "Ô Công", "title": "Ông", "gender": "m", "gen": 2, "parent": "n1", "note": "con cả", "spouse": "Đào", "spouseId": "ng16", "spouseTree": "ngoai", "deceased": false},
+      {"id": "n3", "name": "Bác Thương", "title": "Bác", "gender": "f", "gen": 3, "parent": "n2", "note": "", "deceased": false},
+      {"id": "n4", "name": "A", "title": "", "gender": "f", "gen": 4, "parent": "n3", "note": "", "deceased": false},
+      {"id": "n5", "name": "B", "title": "", "gender": "f", "gen": 4, "parent": "n3", "note": "", "deceased": false},
+      {"id": "n6", "name": "Bác Thức", "title": "Bác", "gender": "m", "gen": 3, "parent": "n2", "note": "con cả", "deceased": false},
+      {"id": "n7", "name": "Duy", "title": "", "gender": "m", "gen": 4, "parent": "n6", "note": "con cả", "deceased": false},
+      {"id": "n8", "name": "Huy", "title": "", "gender": "m", "gen": 4, "parent": "n6", "note": "", "deceased": false},
+      {"id": "n9", "name": "Bảo", "title": "", "gender": "m", "gen": 4, "parent": "n6", "note": "", "deceased": false},
+      {"id": "n10", "name": "Minh", "title": "", "gender": "m", "gen": 4, "parent": "n6", "note": "", "deceased": false},
+      {"id": "n11", "name": "Ô Dược", "title": "Ông", "gender": "m", "gen": 2, "parent": "n1", "note": "", "deceased": false},
+      {"id": "n12", "name": "Thược", "title": "", "gender": "m", "gen": 3, "parent": "n11", "note": "Đã mất ngày 24/4 âm lịch, vợ là bà Trâm", "deceased": true, "spouse": "Trâm", "spouseId": "bng6_4", "spouseTree": "ba-ngoai"},
+      {"id": "n13", "name": "Việt", "title": "", "gender": "m", "gen": 4, "parent": "n12", "note": "", "me": true, "deceased": false},
+      {"id": "n14", "name": "Huyền", "title": "", "gender": "f", "gen": 4, "parent": "n12", "note": "Con cả, chồng là ông Trần Văn Nam (con bố Hoa, mẹ Nhung xóm đoài)", "deceased": false, "spouse": "Trần Văn Nam"},
+      {"id": "custom_1790010430840", "name": "Trần Ngọc Phương Linh", "title": "", "gender": "f", "birth": "2025", "gen": 5, "parent": "n14", "note": "nickname Kem", "deceased": false},
+      {"id": "n15", "name": "Thuộc", "title": "", "gender": "m", "gen": 3, "parent": "n11", "note": "", "deceased": false},
+      {"id": "n16", "name": "Thành", "title": "", "gender": "m", "gen": 4, "parent": "n15", "note": "con cả", "deceased": false},
+      {"id": "n17", "name": "Đạt", "title": "", "gender": "m", "gen": 4, "parent": "n15", "note": "", "deceased": false},
+      {"id": "n18", "name": "Hằng", "title": "", "gender": "f", "gen": 3, "parent": "n11", "note": "", "deceased": false},
+      {"id": "n19", "name": "Hưng", "title": "", "gender": "m", "gen": 4, "parent": "n18", "note": "", "deceased": false},
+      {"id": "n20", "name": "Kiên", "title": "", "gender": "m", "gen": 4, "parent": "n18", "note": "", "deceased": false},
+      {"id": "n21", "name": "Bà Loan", "title": "Bà", "gender": "f", "gen": 2, "parent": "n1", "note": "", "deceased": false},
+      {"id": "n22", "name": "Bà Lan", "title": "Bà", "gender": "f", "gen": 2, "parent": "n1", "note": "", "deceased": false},
+      {"id": "n23", "name": "Bác Hiên", "title": "Bác", "gender": "m", "gen": 3, "parent": "n22", "note": "", "deceased": false},
+      {"id": "n24", "name": "Sỹ", "title": "", "gender": "m", "gen": 3, "parent": "n22", "note": "", "deceased": false},
+      {"id": "n25", "name": "Khiên", "title": "", "gender": "m", "gen": 3, "parent": "n22", "note": "", "deceased": false},
+      {"id": "n26", "name": "Hoa", "title": "", "gender": "f", "gen": 3, "parent": "n22", "note": "", "deceased": false},
+      {"id": "n27", "name": "Cụ Chử 2", "title": "Cụ", "gender": "m", "gen": 1, "parent": "n0", "note": "", "deceased": false},
+      {"id": "n28", "name": "Ô Tư", "title": "Ông", "gender": "m", "gen": 2, "parent": "n27", "note": "", "deceased": false},
+      {"id": "n29", "name": "Cô Hồng", "title": "Cô", "gender": "f", "gen": 3, "parent": "n28", "note": "", "deceased": false},
+      {"id": "n30", "name": "Chú Hoan", "title": "Chú", "gender": "m", "gen": 3, "parent": "n28", "note": "", "deceased": false},
+      {"id": "n31", "name": "Ô Hoa", "title": "Ông", "gender": "m", "gen": 2, "parent": "n27", "note": "", "deceased": false},
+      {"id": "n32", "name": "Cô Nguyên", "title": "Cô", "gender": "f", "gen": 3, "parent": "n31", "note": "", "deceased": false},
+      {"id": "n33", "name": "Cô Hiên", "title": "Cô", "gender": "f", "gen": 3, "parent": "n31", "note": "", "deceased": false},
+      {"id": "n34", "name": "Chú Kiêu", "title": "Chú", "gender": "m", "gen": 3, "parent": "n31", "note": "", "deceased": false},
+      {"id": "n35", "name": "Cô Hon", "title": "Cô", "gender": "f", "gen": 3, "parent": "n31", "note": "", "deceased": false},
+      {"id": "n36", "name": "Hiếu", "title": "", "gender": "m", "gen": 4, "parent": "n35", "note": "", "deceased": false},
+      {"id": "n37", "name": "Linh", "title": "", "gender": "f", "gen": 4, "parent": "n35", "note": "", "deceased": false},
+      {"id": "n38", "name": "X", "title": "", "gender": "f", "gen": 4, "parent": "n35", "note": "", "deceased": false},
+      {"id": "n39", "name": "Ô Chất", "title": "Ông", "gender": "m", "gen": 2, "parent": "n27", "note": "", "deceased": false},
+      {"id": "n40", "name": "Thảo", "title": "", "gender": "f", "gen": 3, "parent": "n39", "note": "", "deceased": false},
+      {"id": "n41", "name": "Thi", "title": "", "gender": "f", "gen": 3, "parent": "n39", "note": "", "deceased": false},
+      {"id": "n42", "name": "Thu", "title": "", "gender": "f", "gen": 3, "parent": "n39", "note": "", "deceased": false},
+      {"id": "n43", "name": "Thêm", "title": "Bà", "gender": "f", "gen": 2, "parent": "n27", "note": "", "deceased": false},
+      {"id": "n44", "name": "Bà Thơm", "title": "Bà", "gender": "f", "gen": 2, "parent": "n27", "note": "", "deceased": false},
+      {"id": "n46", "name": "Cụ Mác", "title": "Cụ", "gender": "m", "gen": 1, "parent": "n0", "note": "", "deceased": true},
+      {"id": "n47", "name": "Ô Chung", "title": "Ông", "gender": "m", "gen": 2, "parent": "n46", "note": "", "deceased": false},
+      {"id": "n48", "name": "Chú Thủy", "title": "Chú", "gender": "m", "gen": 3, "parent": "n47", "note": "", "deceased": false}
     ]
   },
-
   "ba-noi": {
-    label: "Họ Trần – Bà Nội",
-    icon: "👵",
-    color: "#9B6B3A",
-    nodes: [
-      { id:"bn0",  name:"Cụ Tổ",            title:"Cụ",     gender:"m", gen:0, parent:null,   note:"Gốc của nhánh gia phả" },
-      { id:"bn1",  name:"Cụ Tý",            title:"Cụ",     gender:"m", gen:1, parent:"bn0",  note:"" },
-      { id:"bn2",  name:"Ô Học",            title:"Ông",    gender:"m", gen:2, parent:"bn1",  note:"" },
-      { id:"bn3",  name:"Ô (chưa rõ tên)",  title:"Ông",    gender:"m", gen:2, parent:"bn1",  note:"Chưa có thông tin đầy đủ" },
-      { id:"bn4",  name:"Cụ Liên",          title:"Cụ",     gender:"f", gen:1, parent:"bn0",  note:"" },
-      { id:"bn5",  name:"Ông Quyền",        title:"Ông",    gender:"m", gen:2, parent:"bn4",  note:"" },
-      { id:"bn6",  name:"Chú Quân",         title:"Chú",    gender:"m", gen:3, parent:"bn5",  note:"" },
-      { id:"bn7",  name:"Quảng",            title:"",       gender:"m", gen:3, parent:"bn5",  note:"" },
-      { id:"bn8",  name:"Hồng",             title:"",       gender:"f", gen:3, parent:"bn5",  note:"" },
-      { id:"bn9",  name:"Duy",              title:"",       gender:"m", gen:3, parent:"bn5",  note:"" },
-      { id:"bn10", name:"Bà Nga",           title:"Bà",     gender:"f", gen:2, parent:"bn4",  note:"" },
-      { id:"bn11", name:"Bố Thược",         title:"Bố",     gender:"m", gen:3, parent:"bn10", note:"" },
-      { id:"bn12", name:"Huyền",            title:"",       gender:"f", gen:4, parent:"bn11", note:"" },
-      { id:"bn13", name:"Việt",             title:"",       gender:"m", gen:4, parent:"bn11", note:"", me:true },
-      { id:"bn14", name:"Thuộc",            title:"",       gender:"f", gen:3, parent:"bn10", note:"" },
-      { id:"bn15", name:"Thành",            title:"",       gender:"m", gen:4, parent:"bn14", note:"" },
-      { id:"bn16", name:"Đạt",              title:"",       gender:"m", gen:4, parent:"bn14", note:"" },
-      { id:"bn17", name:"Hằng",             title:"",       gender:"f", gen:3, parent:"bn10", note:"" },
-      { id:"bn18", name:"Hưng",             title:"",       gender:"m", gen:4, parent:"bn17", note:"" },
-      { id:"bn19", name:"Kiên",             title:"",       gender:"m", gen:4, parent:"bn17", note:"" },
+    "label": "Họ Trần – Bà Nội",
+    "icon": "👵",
+    "color": "#9B6B3A",
+    "nodes": [
+      {"id": "bn0", "name": "Cụ Tổ", "title": "Cụ", "gender": "m", "gen": 0, "parent": null, "note": "Gốc của nhánh gia phả"},
+      {"id": "bn1", "name": "Cụ Tý", "title": "Cụ", "gender": "m", "gen": 1, "parent": "bn0", "note": ""},
+      {"id": "bn2", "name": "Ô Học", "title": "Ông", "gender": "m", "gen": 2, "parent": "bn1", "note": ""},
+      {"id": "bn3", "name": "Ô (chưa rõ tên)", "title": "Ông", "gender": "m", "gen": 2, "parent": "bn1", "note": "Chưa có thông tin đầy đủ"},
+      {"id": "bn4", "name": "Cụ Liên", "title": "Cụ", "gender": "f", "gen": 1, "parent": "bn0", "note": ""},
+      {"id": "bn5", "name": "Ông Quyền", "title": "Ông", "gender": "m", "gen": 2, "parent": "bn4", "note": ""},
+      {"id": "bn6", "name": "Chú Quân", "title": "Chú", "gender": "m", "gen": 3, "parent": "bn5", "note": ""},
+      {"id": "bn7", "name": "Quảng", "title": "", "gender": "m", "gen": 3, "parent": "bn5", "note": ""},
+      {"id": "bn8", "name": "Hồng", "title": "", "gender": "f", "gen": 3, "parent": "bn5", "note": ""},
+      {"id": "bn9", "name": "Duy", "title": "", "gender": "m", "gen": 3, "parent": "bn5", "note": ""},
+      {"id": "bn10", "name": "Bà Nga", "title": "Bà", "gender": "f", "gen": 2, "parent": "bn4", "note": ""},
+      {"id": "bn11", "name": "Bố Thược", "title": "Bố", "gender": "m", "gen": 3, "parent": "bn10", "note": "", "spouse": "Trâm", "spouseId": "bng6_4", "spouseTree": "ba-ngoai"},
+      {"id": "bn12", "name": "Huyền", "title": "", "gender": "f", "gen": 4, "parent": "bn11", "note": ""},
+      {"id": "bn13", "name": "Việt", "title": "", "gender": "m", "gen": 4, "parent": "bn11", "note": "", "me": true},
+      {"id": "bn14", "name": "Thuộc", "title": "", "gender": "f", "gen": 3, "parent": "bn10", "note": ""},
+      {"id": "bn15", "name": "Thành", "title": "", "gender": "m", "gen": 4, "parent": "bn14", "note": ""},
+      {"id": "bn16", "name": "Đạt", "title": "", "gender": "m", "gen": 4, "parent": "bn14", "note": ""},
+      {"id": "bn17", "name": "Hằng", "title": "", "gender": "f", "gen": 3, "parent": "bn10", "note": ""},
+      {"id": "bn18", "name": "Hưng", "title": "", "gender": "m", "gen": 4, "parent": "bn17", "note": ""},
+      {"id": "bn19", "name": "Kiên", "title": "", "gender": "m", "gen": 4, "parent": "bn17", "note": ""}
     ]
   },
-
-  ngoai: {
-    label: "Họ Trần – Bên Ngoại (Ông Ngoại)",
-    icon: "🌿",
-    color: "#4A8A5A",
-    nodes: [
-      { id:"ng0",  name:"Cụ Đoàn Phúc",    title:"Cụ",     gender:"m", gen:0, parent:null,   note:"Gốc của nhánh gia phả" },
-      { id:"ng1",  name:"Cụ Tiến",          title:"Cụ",     gender:"m", gen:1, parent:"ng0",  note:"" },
-      { id:"ng2",  name:"Ô Sinh",           title:"Ông",    gender:"m", gen:2, parent:"ng1",  note:"" },
-      { id:"ng3",  name:"Tuấn",             title:"",       gender:"m", gen:3, parent:"ng2",  note:"" },
-      { id:"ng4",  name:"Tươi",             title:"",       gender:"f", gen:3, parent:"ng2",  note:"" },
-      { id:"ng5",  name:"Ô Phùng (cả)",    title:"Ông",    gender:"m", gen:2, parent:"ng1",  note:"" },
-      { id:"ng6",  name:"Bác Dung",         title:"Bác",    gender:"f", gen:3, parent:"ng5",  note:"" },
-      { id:"ng7",  name:"Bác Thủy",         title:"Bác",    gender:"f", gen:3, parent:"ng5",  note:"" },
-      { id:"ng8",  name:"Bác Tuyến",        title:"Bác",    gender:"m", gen:3, parent:"ng5",  note:"" },
-      { id:"ng9",  name:"Trung",            title:"",       gender:"m", gen:3, parent:"ng5",  note:"" },
-      { id:"ng10", name:"Liên",             title:"",       gender:"f", gen:3, parent:"ng5",  note:"" },
-      { id:"ng11", name:"Ô Tiên",           title:"Ông",    gender:"m", gen:2, parent:"ng1",  note:"" },
-      { id:"ng12", name:"Long",             title:"",       gender:"m", gen:3, parent:"ng11", note:"" },
-      { id:"ng13", name:"Phong",            title:"",       gender:"m", gen:3, parent:"ng11", note:"" },
-      { id:"ng14", name:"Thiên",            title:"",       gender:"m", gen:3, parent:"ng11", note:"" },
-      { id:"ng15", name:"Vân",              title:"",       gender:"f", gen:3, parent:"ng11", note:"" },
-      { id:"ng16", name:"Đào vợ Ô Công",   title:"",       gender:"f", gen:2, parent:"ng1",  note:"Lấy ô Công bên họ Hoàng nội" },
-      { id:"ng17", name:"Thức",             title:"",       gender:"m", gen:3, parent:"ng16", note:"" },
-      { id:"ng18", name:"Duy",              title:"",       gender:"m", gen:4, parent:"ng17", note:"" },
-      { id:"ng19", name:"Bảo",              title:"",       gender:"m", gen:4, parent:"ng17", note:"" },
-      { id:"ng20", name:"Huy",              title:"",       gender:"m", gen:4, parent:"ng17", note:"" },
-      { id:"ng21", name:"Bảo",              title:"",       gender:"m", gen:4, parent:"ng17", note:"" },
-      { id:"ng22", name:"Thương",           title:"",       gender:"m", gen:3, parent:"ng16", note:"" },
-      { id:"ng23", name:"Nguyệt",           title:"",       gender:"f", gen:2, parent:"ng1",  note:"" },
-      { id:"ng24", name:"Hồng",             title:"",       gender:"f", gen:3, parent:"ng23", note:"" },
-      { id:"ng25", name:"Chính",            title:"",       gender:"m", gen:2, parent:"ng1",  note:"" },
-      { id:"ng26", name:"x",                title:"",       gender:"m", gen:3, parent:"ng25", note:"" },
-      { id:"ng27", name:"y",                title:"",       gender:"m", gen:3, parent:"ng25", note:"" },
-      { id:"ng28", name:"z",                title:"",       gender:"m", gen:3, parent:"ng25", note:"" },
-      { id:"ng29", name:"Bà Mận (cả gái)", title:"Bà",     gender:"f", gen:2, parent:"ng1",  note:"" },
-      { id:"ng30", name:"Long (con nuôi Ô Tiên)", title:"", gender:"m", gen:3, parent:"ng29", note:"Con ô Tiên con nuôi" },
-      { id:"ng31", name:"Cụ Diệt",          title:"Cụ",     gender:"m", gen:1, parent:"ng0",  note:"" },
-      { id:"ng32", name:"Ô Tiêm (Bà Thành)","title":"Ông", gender:"m", gen:2, parent:"ng31", note:"Còn gọi là ông Tiêm; bà vợ là Thành" },
-      { id:"ng33", name:"7 bà con gái",     title:"",       gender:"f", gen:3, parent:"ng32", note:"7 con gái" },
-      { id:"ng34", name:"Bà Nu (Ô Mận)",   title:"Bà",     gender:"f", gen:2, parent:"ng31", note:"" },
-      { id:"ng35", name:"Tuyên",            title:"",       gender:"f", gen:3, parent:"ng34", note:"" },
-      { id:"ng36", name:"Hà",               title:"",       gender:"f", gen:3, parent:"ng34", note:"" },
-      { id:"ng37", name:"Hoa",              title:"",       gender:"f", gen:3, parent:"ng34", note:"" },
-      { id:"ng38", name:"Lý (vợ chú Đường)","title":"",    gender:"f", gen:3, parent:"ng34", note:"" },
-      { id:"ng39", name:"Bà Chè (ông Nhã)","title":"Bà",   gender:"f", gen:2, parent:"ng31", note:"" },
-      { id:"ng40", name:"Duyên",            title:"",       gender:"f", gen:3, parent:"ng39", note:"" },
-      { id:"ng41", name:"Mùi",              title:"",       gender:"f", gen:3, parent:"ng39", note:"" },
-      { id:"ng42", name:"Ngọc",             title:"",       gender:"f", gen:3, parent:"ng39", note:"" },
-      { id:"ng43", name:"Cụ Ty (Vượng)",   title:"Cụ",     gender:"m", gen:1, parent:"ng0",  note:"" },
-      { id:"ng44", name:"Bà Phương",        title:"Bà",     gender:"f", gen:2, parent:"ng43", note:"" },
-      { id:"ng45", name:"Ô Dũng",           title:"Ông",    gender:"m", gen:2, parent:"ng43", note:"" },
+  "ngoai": {
+    "label": "Họ Trần – Bên Ngoại (Ông Ngoại)",
+    "icon": "🌿",
+    "color": "#4A8A5A",
+    "nodes": [
+      {"id": "ng0", "name": "Cụ Đoàn Phúc", "title": "Cụ", "gender": "m", "gen": 0, "parent": null, "note": "Gốc của nhánh gia phả"},
+      {"id": "ng1", "name": "Cụ Tiến", "title": "Cụ", "gender": "m", "gen": 1, "parent": "ng0", "note": ""},
+      {"id": "ng2", "name": "Ô Sinh", "title": "Ông", "gender": "m", "gen": 2, "parent": "ng1", "note": ""},
+      {"id": "ng3", "name": "Tuấn", "title": "", "gender": "m", "gen": 3, "parent": "ng2", "note": ""},
+      {"id": "ng4", "name": "Tươi", "title": "", "gender": "f", "gen": 3, "parent": "ng2", "note": ""},
+      {"id": "ng5", "name": "Ô Phùng (cả)", "title": "Ông", "gender": "m", "gen": 2, "parent": "ng1", "note": ""},
+      {"id": "ng6", "name": "Bác Dung", "title": "Bác", "gender": "f", "gen": 3, "parent": "ng5", "note": ""},
+      {"id": "ng7", "name": "Bác Thủy", "title": "Bác", "gender": "f", "gen": 3, "parent": "ng5", "note": ""},
+      {"id": "ng8", "name": "Bác Tuyến", "title": "Bác", "gender": "m", "gen": 3, "parent": "ng5", "note": ""},
+      {"id": "ng9", "name": "Trung", "title": "", "gender": "m", "gen": 3, "parent": "ng5", "note": ""},
+      {"id": "ng10", "name": "Liên", "title": "", "gender": "f", "gen": 3, "parent": "ng5", "note": ""},
+      {"id": "ng11", "name": "Ô Tiên", "title": "Ông", "gender": "m", "gen": 2, "parent": "ng1", "note": ""},
+      {"id": "ng12", "name": "Long", "title": "", "gender": "m", "gen": 3, "parent": "ng11", "note": ""},
+      {"id": "ng13", "name": "Phong", "title": "", "gender": "m", "gen": 3, "parent": "ng11", "note": ""},
+      {"id": "ng14", "name": "Thiên", "title": "", "gender": "m", "gen": 3, "parent": "ng11", "note": ""},
+      {"id": "ng15", "name": "Vân", "title": "", "gender": "f", "gen": 3, "parent": "ng11", "note": ""},
+      {"id": "ng16", "name": "Đào vợ Ô Công", "title": "", "gender": "f", "gen": 2, "parent": "ng1", "note": "Lấy ô Công bên họ Hoàng nội", "spouse": "Ô Công", "spouseId": "n2", "spouseTree": "noi"},
+      {"id": "ng17", "name": "Thức", "title": "", "gender": "m", "gen": 3, "parent": "ng16", "note": ""},
+      {"id": "ng18", "name": "Duy", "title": "", "gender": "m", "gen": 4, "parent": "ng17", "note": ""},
+      {"id": "ng19", "name": "Bảo", "title": "", "gender": "m", "gen": 4, "parent": "ng17", "note": ""},
+      {"id": "ng20", "name": "Huy", "title": "", "gender": "m", "gen": 4, "parent": "ng17", "note": ""},
+      {"id": "ng21", "name": "Bảo", "title": "", "gender": "m", "gen": 4, "parent": "ng17", "note": ""},
+      {"id": "ng22", "name": "Thương", "title": "", "gender": "m", "gen": 3, "parent": "ng16", "note": ""},
+      {"id": "ng23", "name": "Nguyệt", "title": "", "gender": "f", "gen": 2, "parent": "ng1", "note": ""},
+      {"id": "ng24", "name": "Hồng", "title": "", "gender": "f", "gen": 3, "parent": "ng23", "note": ""},
+      {"id": "ng25", "name": "Chính", "title": "", "gender": "m", "gen": 2, "parent": "ng1", "note": ""},
+      {"id": "ng26", "name": "x", "title": "", "gender": "m", "gen": 3, "parent": "ng25", "note": ""},
+      {"id": "ng27", "name": "y", "title": "", "gender": "m", "gen": 3, "parent": "ng25", "note": ""},
+      {"id": "ng28", "name": "z", "title": "", "gender": "m", "gen": 3, "parent": "ng25", "note": ""},
+      {"id": "ng29", "name": "Bà Mận (cả gái)", "title": "Bà", "gender": "f", "gen": 2, "parent": "ng1", "note": ""},
+      {"id": "ng30", "name": "Long (con nuôi Ô Tiên)", "title": "", "gender": "m", "gen": 3, "parent": "ng29", "note": "Con ô Tiên con nuôi"},
+      {"id": "ng31", "name": "Cụ Diệt", "title": "Cụ", "gender": "m", "gen": 1, "parent": "ng0", "note": ""},
+      {"id": "ng32", "name": "Ô Tiêm (Bà Thành)", "title": "Ông", "gender": "m", "gen": 2, "parent": "ng31", "note": "Còn gọi là ông Tiêm; bà vợ là Thành", "spouse": "Bà Phạm Thị Thành", "spouseId": "bng6", "spouseTree": "ba-ngoai"},
+      {"id": "ng33", "name": "7 bà con gái", "title": "", "gender": "f", "gen": 3, "parent": "ng32", "note": "7 con gái"},
+      {"id": "ng34", "name": "Bà Nu (Ô Mận)", "title": "Bà", "gender": "f", "gen": 2, "parent": "ng31", "note": ""},
+      {"id": "ng35", "name": "Tuyên", "title": "", "gender": "f", "gen": 3, "parent": "ng34", "note": ""},
+      {"id": "ng36", "name": "Hà", "title": "", "gender": "f", "gen": 3, "parent": "ng34", "note": ""},
+      {"id": "ng37", "name": "Hoa", "title": "", "gender": "f", "gen": 3, "parent": "ng34", "note": ""},
+      {"id": "ng38", "name": "Lý (vợ chú Đường)", "title": "", "gender": "f", "gen": 3, "parent": "ng34", "note": ""},
+      {"id": "ng39", "name": "Bà Chè (ông Nhã)", "title": "Bà", "gender": "f", "gen": 2, "parent": "ng31", "note": ""},
+      {"id": "ng40", "name": "Duyên", "title": "", "gender": "f", "gen": 3, "parent": "ng39", "note": ""},
+      {"id": "ng41", "name": "Mùi", "title": "", "gender": "f", "gen": 3, "parent": "ng39", "note": ""},
+      {"id": "ng42", "name": "Ngọc", "title": "", "gender": "f", "gen": 3, "parent": "ng39", "note": ""},
+      {"id": "ng43", "name": "Cụ Ty (Vượng)", "title": "Cụ", "gender": "m", "gen": 1, "parent": "ng0", "note": ""},
+      {"id": "ng44", "name": "Bà Phương", "title": "Bà", "gender": "f", "gen": 2, "parent": "ng43", "note": ""},
+      {"id": "ng45", "name": "Ô Dũng", "title": "Ông", "gender": "m", "gen": 2, "parent": "ng43", "note": ""}
     ]
   },
-
   "ba-ngoai": {
-    label: "Họ Phạm – Bà Ngoại",
-    icon: "🌸",
-    color: "#8A4A7A",
-    nodes: [
-      { id:"bng0",  name:"Cụ Phó Quế",     title:"Cụ",     gender:"m", gen:0, parent:null,   note:"Gốc của nhánh gia phả" },
-      { id:"bng1",  name:"Cụ Viên",         title:"Cụ",     gender:"m", gen:1, parent:"bng0", note:"" },
-      { id:"bng2",  name:"Chuyên",          title:"",       gender:"m", gen:2, parent:"bng1", note:"" },
-      { id:"bng3",  name:"Cần",             title:"",       gender:"m", gen:2, parent:"bng1", note:"" },
-      { id:"bng4",  name:"Cụ bà (lấy cụ Trừng con rể)", title:"Cụ bà", gender:"f", gen:1, parent:"bng0", note:"Lấy cụ Trừng (con rể)" },
-      { id:"bng5",  name:"Bà Quý",          title:"Bà",     gender:"f", gen:2, parent:"bng4", note:"" },
-      { id:"bng6",  name:"Bà Tiêm (Thành)","title":"Bà",   gender:"f", gen:2, parent:"bng4", note:"Vợ ông Tiêm, tên là Thành" },
-      { id:"bng7",  name:"7 bà con gái",    title:"",       gender:"f", gen:3, parent:"bng6", note:"7 con gái" },
-      { id:"bng8",  name:"Ô Quyền",         title:"Ông",    gender:"m", gen:2, parent:"bng4", note:"" },
-      { id:"bng9",  name:"Thoa",            title:"",       gender:"f", gen:3, parent:"bng8", note:"" },
-      { id:"bng10", name:"Nguyệt",          title:"",       gender:"f", gen:3, parent:"bng8", note:"" },
-      { id:"bng11", name:"Ngoan",           title:"",       gender:"f", gen:3, parent:"bng8", note:"" },
-      { id:"bng12", name:"Quyết",           title:"",       gender:"m", gen:3, parent:"bng8", note:"" },
-      { id:"bng13", name:"Ngà",             title:"",       gender:"f", gen:3, parent:"bng8", note:"" },
-      { id:"bng14", name:"Nhung",           title:"",       gender:"f", gen:3, parent:"bng8", note:"" },
-      { id:"bng15", name:"Bà Tý",           title:"Bà",     gender:"f", gen:2, parent:"bng4", note:"" },
+    "label": "Họ Phạm – Bà Ngoại",
+    "icon": "🌸",
+    "color": "#8A4A7A",
+    "nodes": [
+      {"id": "bng0", "name": "Cụ Phó Quế", "title": "Cụ", "gender": "m", "gen": 0, "parent": null, "note": "Gốc của nhánh gia phả"},
+      {"id": "bng1", "name": "Cụ Viên", "title": "Cụ", "gender": "m", "gen": 1, "parent": "bng0", "note": ""},
+      {"id": "bng2", "name": "Chuyên", "title": "Ông", "gender": "m", "gen": 2, "parent": "bng1", "note": ""},
+      {"id": "bng3", "name": "Cần", "title": "Ông", "gender": "m", "gen": 2, "parent": "bng1", "note": ""},
+      {"id": "bng4", "name": "Cụ bà (lấy cụ Trừng con rể)", "title": "Cụ bà", "gender": "f", "gen": 1, "parent": "bng0", "note": "Lấy cụ Trừng (con rể)", "spouse": "Cụ Trừng"},
+      {"id": "bng5", "name": "Bà Quý", "title": "Bà", "gender": "f", "gen": 2, "parent": "bng4", "note": ""},
+      {"id": "bng6", "name": "Bà Phạm Thị Thành", "title": "Bà", "gender": "f", "gen": 2, "parent": "bng4", "note": "Vợ ông Tiêm, tên là Thành", "spouse": "Ô Tiêm (Bà Thành)", "spouseId": "ng32", "spouseTree": "ngoai"},
+      {"id": "bng6_1", "name": "Minh", "title": "", "gender": "f", "gen": 3, "parent": "bng6", "note": ""},
+      {"id": "bng6_2", "name": "Tâm", "title": "", "gender": "f", "gen": 3, "parent": "bng6", "note": ""},
+      {"id": "bng6_3", "name": "Phương", "title": "", "gender": "f", "gen": 3, "parent": "bng6", "note": ""},
+      {"id": "bng6_4", "name": "Trâm", "title": "", "gender": "f", "gen": 3, "parent": "bng6", "note": "", "spouse": "Thược", "spouseId": "n12", "spouseTree": "noi"},
+      {"id": "bng6_5", "name": "Oanh", "title": "", "gender": "f", "gen": 3, "parent": "bng6", "note": ""},
+      {"id": "bng6_6", "name": "Sáu", "title": "", "gender": "f", "gen": 3, "parent": "bng6", "note": ""},
+      {"id": "bng6_7", "name": "Bảy", "title": "", "gender": "f", "gen": 3, "parent": "bng6", "note": ""},
+      {"id": "bng8", "name": "Ô Quyền", "title": "Ông", "gender": "m", "gen": 2, "parent": "bng4", "note": ""},
+      {"id": "bng9", "name": "Thoa", "title": "", "gender": "f", "gen": 3, "parent": "bng8", "note": ""},
+      {"id": "bng10", "name": "Nguyệt", "title": "", "gender": "f", "gen": 3, "parent": "bng8", "note": ""},
+      {"id": "bng11", "name": "Ngoan", "title": "", "gender": "f", "gen": 3, "parent": "bng8", "note": ""},
+      {"id": "bng12", "name": "Quyết", "title": "", "gender": "m", "gen": 3, "parent": "bng8", "note": ""},
+      {"id": "bng13", "name": "Ngà", "title": "", "gender": "f", "gen": 3, "parent": "bng8", "note": ""},
+      {"id": "bng14", "name": "Nhung", "title": "", "gender": "f", "gen": 3, "parent": "bng8", "note": ""},
+      {"id": "bng15", "name": "Bà Tý", "title": "Bà", "gender": "f", "gen": 2, "parent": "bng4", "note": ""}
     ]
   }
 };
 
-// ────────────────────────────────────────────────────────────
-// STATE
-// ────────────────────────────────────────────────────────────
+const STORAGE_KEY = 'gia-pha-doc-lap-v2';
+let data = null;
 let currentTree = 'noi';
 let currentView = 'tree';
-let editingId   = null;
-let collapsed   = {};
-let data;
-const STORAGE_KEY = 'gia-pha-doc-lap-v1';
+let editingId = null;
+let collapsed = {};
 
-function stripLeadingTitle(name) {
-  return (name || '')
-    .replace(/^\s*(Cụ bà|Cụ|Ông|Ô|Bà|Bác|Chú|Cô|Bố|Mẹ)\s+/i, '')
-    .trim();
-}
-
-function getDisplayName(node, withMarker = true) {
-  const gen = Number(node.gen || 0);
-  const cleanName = stripLeadingTitle(node.name);
-  const title = (node.title || '').trim();
-  const keepTitle = gen <= 2 && title && !['Bác', 'Chú', 'Cô', 'Bố', 'Mẹ'].includes(title);
-  const label = keepTitle ? `${title} ${cleanName}` : cleanName;
-  const marker = withMarker && node.me ? ' ★' : '';
-  return label + marker + (node.deceased ? ' †' : '');
+// ────────────────────────────────────────────────────────────
+// INIT & STORAGE
+// ────────────────────────────────────────────────────────────
+function autoHealLinks() {
+  if (!data) return;
+  // Ensure ng32 (Ô Tiêm) and bng6 (Bà Thành) are explicitly linked
+  if (data['ngoai'] && data['ba-ngoai']) {
+    const ng32 = data['ngoai'].nodes.find(n => n.id === 'ng32');
+    const bng6 = data['ba-ngoai'].nodes.find(n => n.id === 'bng6');
+    if (ng32 && (!ng32.spouseId || ng32.spouseId !== 'bng6')) {
+      ng32.spouseId = 'bng6';
+      ng32.spouseTree = 'ba-ngoai';
+      ng32.spouse = 'Bà Phạm Thị Thành';
+    }
+    if (bng6 && (!bng6.spouseId || bng6.spouseId !== 'ng32')) {
+      bng6.spouseId = 'ng32';
+      bng6.spouseTree = 'ngoai';
+      bng6.spouse = 'Ô Tiêm (Bà Thành)';
+    }
+  }
+  // Ensure n12/bn11 (Thược) and bng6_4 (Trâm) are explicitly linked
+  if (data['ba-ngoai']) {
+    const bng6_4 = data['ba-ngoai'].nodes.find(n => n.id === 'bng6_4');
+    if (data['noi']) {
+      const n12 = data['noi'].nodes.find(n => n.id === 'n12');
+      if (n12 && !n12.spouseId) {
+        n12.spouseId = 'bng6_4';
+        n12.spouseTree = 'ba-ngoai';
+        n12.spouse = 'Trâm';
+      }
+    }
+    if (data['ba-noi']) {
+      const bn11 = data['ba-noi'].nodes.find(n => n.id === 'bn11');
+      if (bn11 && !bn11.spouseId) {
+        bn11.spouseId = 'bng6_4';
+        bn11.spouseTree = 'ba-ngoai';
+        bn11.spouse = 'Trâm';
+      }
+    }
+    if (bng6_4 && !bng6_4.spouseId) {
+      bng6_4.spouseId = 'n12';
+      bng6_4.spouseTree = 'noi';
+      bng6_4.spouse = 'Thược';
+    }
+  }
 }
 
 function loadData() {
@@ -1003,52 +1184,99 @@ function loadData() {
   } catch(e) {
     data = JSON.parse(JSON.stringify(DEFAULT_DATA));
   }
-  // Sửa tên đã ghi nhầm ở các bản trước; áp dụng cả khi dữ liệu cũ còn trong trình duyệt.
-  const duocChild = data && data.noi && data.noi.nodes && data.noi.nodes.find(n => n.id === 'n12');
-  if (duocChild && /^Thượng\b/.test(duocChild.name || '')) {
-    duocChild.name = duocChild.name.replace(/^Thượng\b/, 'Thược');
-  }
+  autoHealLinks();
 }
 
-function saveData() {
-  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); } catch (e) { /* iOS file preview may block storage. */ }
-  showToast('Đã lưu!');
+function saveData(silent = false) {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    if (!silent) showToast('Đã lưu thay đổi!');
+  } catch (e) {}
 }
 
 // ────────────────────────────────────────────────────────────
-// TREE SELECTION
+// THEME & SIDEBAR
+// ────────────────────────────────────────────────────────────
+function initThemeAndSidebar() {
+  const theme = localStorage.getItem('gp-theme') || 'dark';
+  applyTheme(theme);
+
+  const sbState = localStorage.getItem('gp-sidebar');
+  if (sbState === '0') {
+    document.getElementById('sidebar')?.classList.add('collapsed');
+    document.getElementById('sidebarToggle').textContent = '▶';
+  }
+}
+
+function applyTheme(t) {
+  if (t === 'light') {
+    document.body.classList.add('theme-light');
+    document.getElementById('themeBtn').textContent = '☀️';
+  } else {
+    document.body.classList.remove('theme-light');
+    document.getElementById('themeBtn').textContent = '🌙';
+  }
+  localStorage.setItem('gp-theme', t);
+}
+
+function toggleTheme() {
+  const isLight = document.body.classList.contains('theme-light');
+  applyTheme(isLight ? 'dark' : 'light');
+}
+
+function toggleSidebar() {
+  const sb = document.getElementById('sidebar');
+  const btn = document.getElementById('sidebarToggle');
+  const isCollapsed = sb.classList.toggle('collapsed');
+  btn.textContent = isCollapsed ? '▶' : '☰';
+  localStorage.setItem('gp-sidebar', isCollapsed ? '0' : '1');
+}
+
+// ────────────────────────────────────────────────────────────
+// TREE SELECTION & VIEW
 // ────────────────────────────────────────────────────────────
 function selectTree(key) {
   currentTree = key;
   document.querySelectorAll('.tree-btn').forEach(b => b.classList.remove('active'));
-  document.getElementById('btn-' + key).classList.add('active');
+  document.getElementById('btn-' + key)?.classList.add('active');
   render();
 }
 
-// ────────────────────────────────────────────────────────────
-// VIEW SWITCHING
-// ────────────────────────────────────────────────────────────
 function switchView(v) {
   currentView = v;
   document.querySelectorAll('.view-tab').forEach(t => t.classList.remove('active'));
-  document.getElementById('tab-' + v).classList.add('active');
+  document.getElementById('tab-' + v)?.classList.add('active');
   document.getElementById('treeView').style.display = v === 'tree' ? 'block' : 'none';
   document.getElementById('tableView').style.display = v === 'table' ? 'block' : 'none';
   render();
 }
 
 // ────────────────────────────────────────────────────────────
-// BUILD CHILDREN MAP
+// TREE RENDERING
 // ────────────────────────────────────────────────────────────
+function stripLeadingTitle(name) {
+  return (name || '').replace(/^\s*(Cụ bà|Cụ|Ông|Ô|Bà|Bác|Chú|Cô|Bố|Mẹ)\s+/i, '').trim();
+}
+
+function getDisplayName(node, withMarker = true) {
+  if (!node) return '—';
+  const gen = Number(node.gen || 0);
+  const cleanName = stripLeadingTitle(node.name);
+  const title = (node.title || '').trim();
+  const keepTitle = gen <= 2 && title && !['Bác', 'Chú', 'Cô', 'Bố', 'Mẹ'].includes(title);
+  const label = keepTitle ? `${title} ${cleanName}` : cleanName;
+  const marker = withMarker && node.me ? ' ★' : '';
+  return label + marker;
+}
+
 function buildMap(nodes) {
   const map = {};
   nodes.forEach(n => {
     map[n.id] = n;
-    if (!n.children) n.children = [];
+    n.children = [];
   });
   nodes.forEach(n => {
     if (n.parent && map[n.parent]) {
-      if (!map[n.parent].children) map[n.parent].children = [];
       map[n.parent].children.push(n);
     }
   });
@@ -1059,9 +1287,6 @@ function getRoots(nodes, map) {
   return nodes.filter(n => !n.parent || !map[n.parent]);
 }
 
-// ────────────────────────────────────────────────────────────
-// RENDER TREE
-// ────────────────────────────────────────────────────────────
 function render() {
   if (currentView === 'tree') renderTree();
   else renderTable();
@@ -1069,19 +1294,17 @@ function render() {
 
 function renderTree() {
   const tree = data[currentTree];
+  if (!tree) return;
   const nodes = tree.nodes;
-  // reset children
-  nodes.forEach(n => { n.children = []; });
   const map = buildMap(nodes);
   const roots = getRoots(nodes, map);
-
   const container = document.getElementById('treeView');
 
   let html = `<div class="tree-wrap">`;
-  html += `<div style="margin-bottom:20px;display:flex;align-items:center;gap:12px;">
-    <div class="tree-root-label" style="background:${tree.color}">${tree.icon} ${tree.label}</div>
-    <button class="btn" onclick="expandAll()" style="font-size:0.75rem;padding:4px 10px;">+ Mở tất cả</button>
-    <button class="btn" onclick="collapseAll()" style="font-size:0.75rem;padding:4px 10px;">− Thu tất cả</button>
+  html += `<div class="tree-root-bar">
+    <div class="tree-root-label" style="background:${tree.color};">${tree.icon} ${tree.label}</div>
+    <button class="btn" onclick="expandAll()">+ Mở tất cả</button>
+    <button class="btn" onclick="collapseAll()">− Thu gọn</button>
   </div>`;
 
   html += `<ul class="tree-ul">`;
@@ -1093,8 +1316,8 @@ function renderTree() {
 
 function renderNode(node, map, color) {
   const hasChildren = node.children && node.children.length > 0;
-  const isCollapsed = collapsed[node.id];
-  const isMe = node.me;
+  const isCollapsed = Boolean(collapsed[node.id]);
+  const isMe = Boolean(node.me);
   const gIcon = node.gender === 'f' ? '♀' : '♂';
   const gClass = node.gender === 'f' ? 'gender-f' : 'gender-m';
 
@@ -1102,28 +1325,45 @@ function renderNode(node, map, color) {
   if (isMe) cls += ' me';
   if (node.deceased) cls += ' deceased';
 
-  let html = `<li class="tree-li">
-    <div style="display:inline-flex;align-items:center;gap:4px;">`;
+  let html = `<li class="tree-li">`;
+  html += `<div class="node-row">`;
 
   if (hasChildren) {
     html += `<button class="toggle-btn" onclick="toggleCollapse('${node.id}')">${isCollapsed ? '+' : '−'}</button>`;
   } else {
-    html += `<span style="display:inline-block;width:20px;"></span>`;
+    html += `<span class="toggle-spacer"></span>`;
   }
 
   const dispName = getDisplayName(node, false);
   html += `<div class="${cls}" onclick="openInfoPanel('${node.id}')" ondblclick="openEditModal('${node.id}')">
-    <span class="node-icon ${gClass}" style="font-size:0.8rem;">${gIcon}</span>
+    <span class="node-icon ${gClass}">${gIcon}</span>
     <span class="node-name">${dispName}</span>`;
-  if (node.deceased) html += `<span class="node-deceased">Đã mất</span>`;
-  if (node.gen !== undefined) {
-    html += `<span class="node-role">Đời ${node.gen + 1}</span>`;
+
+  if (node.deceased) {
+    html += `<span class="node-deceased-tag">† Đã mất</span>`;
   }
-  html += `</div>
-    <button class="btn" onclick="openAddChildModal('${node.id}')" style="font-size:0.65rem;padding:2px 7px;margin-left:4px;opacity:0.5;" title="Thêm con">+</button>
-  </div>`;
+
+  if (node.spouse) {
+    let fullSpouse = node.spouse;
+    for (const k of Object.keys(data)) {
+      const foundSp = data[k].nodes.find(n => n.id === node.spouse);
+      if (foundSp) {
+        fullSpouse = getDisplayName(foundSp, false);
+        break;
+      }
+    }
+    const shortName = fullSpouse.split('(')[0].replace(/^vợ là|^chồng là/i, '').trim();
+    html += `<span class="node-spouse" title="Vợ/Chồng: ${fullSpouse}">⚭ ${shortName}</span>`;
+  }
+
+  if (node.gen !== undefined) html += `<span class="node-role">Đời ${Number(node.gen) + 1}</span>`;
+
+  html += `</div>`;
+  html += `<button class="btn-add-child" onclick="openAddChildModal('${node.id}')" title="Thêm con">+</button>`;
+  html += `</div>`;
 
   if (hasChildren && !isCollapsed) {
+    html += `<div class="tree-parent-stem"></div>`;
     html += `<ul class="tree-ul">`;
     node.children.forEach(child => { html += renderNode(child, map, color); });
     html += `</ul>`;
@@ -1152,23 +1392,24 @@ function collapseAll() {
 }
 
 // ────────────────────────────────────────────────────────────
-// RENDER TABLE
+// TABLE VIEW
 // ────────────────────────────────────────────────────────────
 function renderTable() {
   const tree = data[currentTree];
-  const nodes = [...tree.nodes].sort((a,b) => a.gen - b.gen || a.name.localeCompare(b.name));
+  const nodes = [...tree.nodes].sort((a,b) => (a.gen||0) - (b.gen||0) || a.name.localeCompare(b.name));
   const map = {};
-  data[currentTree].nodes.forEach(n => { map[n.id] = n; });
+  tree.nodes.forEach(n => { map[n.id] = n; });
 
   let html = `<table>
     <thead><tr>
-      <th>Tên</th>
+      <th>Họ và tên</th>
       <th>Giới tính</th>
       <th>Đời</th>
-      <th>Cha/Mẹ</th>
+      <th>Cha / Mẹ</th>
+      <th>Vợ / Chồng</th>
       <th>Trạng thái</th>
       <th>Ghi chú</th>
-      <th></th>
+      <th>Thao tác</th>
     </tr></thead>
     <tbody>`;
 
@@ -1183,11 +1424,12 @@ function renderTable() {
     html += `<tr${rowCls}>
       <td><strong>${dispName}</strong>${meMark}</td>
       <td>${gLabel}</td>
-      <td><span class="generation-badge">Đời ${(n.gen||0)+1}</span></td>
+      <td><span class="node-role">Đời ${(n.gen||0)+1}</span></td>
       <td>${parentName}</td>
+      <td>${n.spouse || '—'}</td>
       <td>${n.deceased ? '† Đã mất' : 'Còn sống'}</td>
-      <td style="color:var(--text-soft);font-size:0.78rem;">${n.note||'—'}</td>
-      <td><button class="btn" onclick="openEditModal('${n.id}')" style="font-size:0.72rem;padding:3px 8px;">Sửa</button></td>
+      <td style="color:var(--text-soft);font-size:0.8rem;">${n.note||'—'}</td>
+      <td><button class="btn" onclick="openEditModal('${n.id}')" style="padding:3px 8px;font-size:0.75rem;">Sửa</button></td>
     </tr>`;
   });
 
@@ -1211,13 +1453,21 @@ function openInfoPanel(id) {
 
   document.getElementById('infoPanelName').textContent = getDisplayName(node);
 
+  // Check spouse display
+  let spouseDisp = node.spouse || 'Chưa rõ';
+  const spouseInfo = findSpouseNode(node, currentTree);
+  if (spouseInfo) {
+    spouseDisp = `⚭ ${getDisplayName(spouseInfo.spouseNode, false)} (${data[spouseInfo.spouseTreeKey].label})`;
+  }
+
   const rows = [
     ['Giới tính', node.gender === 'f' ? '♀ Nữ' : '♂ Nam'],
-    ['Thế hệ', `Đời ${(node.gen||0)+1}`],
+    ['Thế hệ', `Đời ${(Number(node.gen)||0)+1}`],
     ['Trạng thái', node.deceased ? '† Đã mất' : 'Còn sống'],
+    ['Năm sinh', node.birth || 'Chưa rõ'],
     ['Cha / Mẹ', parent ? getDisplayName(parent, false) : 'Gốc dòng họ'],
+    ['Vợ / Chồng', spouseDisp],
     ['Con cái', children.length > 0 ? children.map(c => getDisplayName(c, false)).join(', ') : 'Chưa có thông tin'],
-    ['Số con', children.length + ' người'],
     ['Ghi chú', node.note || '—'],
   ];
 
@@ -1225,12 +1475,47 @@ function openInfoPanel(id) {
   rows.forEach(([k, v]) => {
     html += `<div class="info-row"><div class="info-key">${k}</div><div class="info-val">${v}</div></div>`;
   });
-  html += `<div style="margin-top:12px;display:flex;gap:6px;">
-    <button class="btn primary" onclick="openEditModal('${id}')" style="flex:1;font-size:0.78rem;">✏️ Sửa</button>
-    <button class="btn" onclick="openAddChildModal('${id}')" style="flex:1;font-size:0.78rem;">+ Thêm con</button>
-  </div>`;
+
+  // Check matching person in other branches
+  const crossMatches = findCrossMatches(currentTree, node);
+  if (crossMatches.length > 0) {
+    const matchHtml = crossMatches.map(m => `
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:6px;background:rgba(201,168,76,0.12);padding:6px 10px;border-radius:6px;margin-top:4px;">
+        <span style="font-size:0.78rem;color:var(--gold-light);">🔗 <strong>${getDisplayName(m.node, false)}</strong> <small style="opacity:0.8;">(${m.treeLabel})</small></span>
+        <div style="display:flex;gap:4px;">
+          <button class="btn" onclick="jumpToResult('${m.treeKey}','${m.node.id}')" title="Xem người này ở nhánh khác" style="padding:2px 6px;font-size:0.7rem;">Xem</button>
+          <button class="btn primary" onclick="syncTwoNodes('${currentTree}','${id}','${m.treeKey}','${m.node.id}')" title="Sao chép thông tin người này sang nhánh kia" style="padding:2px 6px;font-size:0.7rem;">🔄 Đồng bộ</button>
+        </div>
+      </div>
+    `).join('');
+
+    html += `<div class="info-row" style="margin-top:8px;">
+      <div class="info-key">Xuất hiện ở nhánh gia phả khác:</div>
+      ${matchHtml}
+    </div>`;
+  }
+
+  // Check spouse children sync
+  if (spouseInfo) {
+    const spouseChildren = (data[spouseInfo.spouseTreeKey]?.nodes || []).filter(n => n.parent === spouseInfo.spouseNode.id);
+    if (spouseChildren.length > 0) {
+      html += `<div class="info-row" style="margin-top:8px;">
+        <div class="info-key">Đồng bộ con từ Vợ / Chồng:</div>
+        <div style="background:rgba(201,168,76,0.12);padding:10px 12px;border-radius:8px;display:flex;flex-direction:column;gap:6px;border:1px solid var(--node-border);">
+          <span style="font-size:0.84rem;color:var(--gold-light);">
+            ⚭ <strong>${getDisplayName(spouseInfo.spouseNode, false)}</strong> (${data[spouseInfo.spouseTreeKey].label}) có <strong>${spouseChildren.length}</strong> người con
+          </span>
+          <button class="btn primary" onclick="syncChildrenBetweenSpouses('${id}', '${currentTree}')" style="font-size:0.8rem;padding:7px 12px;display:flex;align-items:center;justify-content:center;gap:6px;margin-top:2px;">
+            👶 Đồng bộ ${spouseChildren.length} con từ ${getDisplayName(spouseInfo.spouseNode, false)} sang đây
+          </button>
+        </div>
+      </div>`;
+    }
+  }
 
   document.getElementById('infoPanelBody').innerHTML = html;
+  document.getElementById('btnInfoEdit').onclick = () => openEditModal(id);
+  document.getElementById('btnInfoAddChild').onclick = () => openAddChildModal(id);
   document.getElementById('infoPanel').classList.add('open');
 }
 
@@ -1238,15 +1523,306 @@ function closeInfoPanel() {
   document.getElementById('infoPanel').classList.remove('open');
 }
 
-// ────────────────────────────────────────────────────────────
-// MODAL
-// ────────────────────────────────────────────────────────────
+function findSpouseNode(node, treeKey) {
+  if (!node) return null;
+
+  // 1. Direct explicit spouseId and spouseTree on node
+  if (node.spouseId && node.spouseTree && data[node.spouseTree]) {
+    const sp = data[node.spouseTree].nodes.find(n => n.id === node.spouseId);
+    if (sp) return { spouseTreeKey: node.spouseTree, spouseNode: sp };
+  }
+
+  // 2. Check if node.spouse contains [treeKey:nodeId]
+  if (node.spouse) {
+    const tagMatch = node.spouse.match(/\[([a-zA-Z0-9_-]+):([a-zA-Z0-9_-]+)\]/);
+    if (tagMatch) {
+      const tKey = tagMatch[1];
+      const nId = tagMatch[2];
+      if (data[tKey]) {
+        const sp = data[tKey].nodes.find(n => n.id === nId);
+        if (sp) return { spouseTreeKey: tKey, spouseNode: sp };
+      }
+    }
+  }
+
+  // 3. Reverse link: Check if any other node has this node as spouseId
+  for (const [tKey, tree] of Object.entries(data)) {
+    if (tKey === treeKey) continue;
+    for (const other of (tree.nodes || [])) {
+      if (other.spouseId === node.id && other.spouseTree === treeKey) {
+        return { spouseTreeKey: tKey, spouseNode: other };
+      }
+      if (other.spouse && other.spouse.includes(`[${treeKey}:${node.id}]`)) {
+        return { spouseTreeKey: tKey, spouseNode: other };
+      }
+    }
+  }
+
+  // 4. Default relationship link fallback
+  if (node.id === 'ng32' && data['ba-ngoai']) {
+    const sp = data['ba-ngoai'].nodes.find(n => n.id === 'bng6');
+    if (sp) return { spouseTreeKey: 'ba-ngoai', spouseNode: sp };
+  }
+  if (node.id === 'bng6' && data['ngoai']) {
+    const sp = data['ngoai'].nodes.find(n => n.id === 'ng32');
+    if (sp) return { spouseTreeKey: 'ngoai', spouseNode: sp };
+  }
+  if ((node.id === 'n12' || node.id === 'bn11') && data['ba-ngoai']) {
+    const sp = data['ba-ngoai'].nodes.find(n => n.id === 'bng6_4');
+    if (sp) return { spouseTreeKey: 'ba-ngoai', spouseNode: sp };
+  }
+  if (node.id === 'bng6_4' && data['noi']) {
+    const sp = data['noi'].nodes.find(n => n.id === 'n12');
+    if (sp) return { spouseTreeKey: 'noi', spouseNode: sp };
+  }
+  if (node.id === 'n2' && data['ngoai']) {
+    const sp = data['ngoai'].nodes.find(n => n.id === 'ng16');
+    if (sp) return { spouseTreeKey: 'ngoai', spouseNode: sp };
+  }
+  if (node.id === 'ng16' && data['noi']) {
+    const sp = data['noi'].nodes.find(n => n.id === 'n2');
+    if (sp) return { spouseTreeKey: 'noi', spouseNode: sp };
+  }
+
+  return null;
+}
+
+function syncChildrenBetweenSpouses(nodeId, treeKey) {
+  const node = data[treeKey]?.nodes.find(n => n.id === nodeId);
+  if (!node) return;
+  
+  const spouseObj = findSpouseNode(node, treeKey);
+  if (!spouseObj) {
+    showToast('Chưa tìm thấy liên kết Vợ/Chồng ở các nhánh khác!');
+    return;
+  }
+
+  const { spouseTreeKey, spouseNode } = spouseObj;
+  const srcNodes = data[spouseTreeKey].nodes;
+  const spouseChildren = srcNodes.filter(n => n.parent === spouseNode.id);
+  
+  if (spouseChildren.length === 0) {
+    showToast(`Bên ${getDisplayName(spouseNode, false)} chưa có dữ liệu con để đồng bộ!`);
+    return;
+  }
+
+  // Remove ALL previously synced/placeholder descendants under this node recursively
+  function collectDescendantIds(parentId, nodesList) {
+    const ids = new Set();
+    function walk(pid) {
+      nodesList.forEach(n => {
+        if (n.parent === pid) {
+          ids.add(n.id);
+          walk(n.id);
+        }
+      });
+    }
+    walk(parentId);
+    return ids;
+  }
+  const oldIds = collectDescendantIds(node.id, data[treeKey].nodes);
+  data[treeKey].nodes = data[treeKey].nodes.filter(n => !oldIds.has(n.id));
+
+  // Recursively copy entire subtree from spouseNode into this tree, remapping IDs
+  const idMap = {}; // srcId → newId
+  let totalSynced = 0;
+
+  function copySubtree(srcNodeId, newParentId, genLevel) {
+    const children = srcNodes.filter(n => n.parent === srcNodeId);
+    children.forEach(sc => {
+      const newId = 'sync_' + Date.now() + '_' + Math.random().toString(36).substr(2, 6);
+      idMap[sc.id] = newId;
+      totalSynced++;
+      data[treeKey].nodes.push({
+        id: newId,
+        name: sc.name,
+        title: sc.title || '',
+        gender: sc.gender || 'f',
+        birth: sc.birth || '',
+        gen: genLevel,
+        parent: newParentId,
+        spouse: sc.spouse || '',
+        spouseId: sc.spouseId || undefined,
+        spouseTree: sc.spouseTree || undefined,
+        relationType: sc.relationType || '',
+        note: sc.note || '',
+        deceased: Boolean(sc.deceased),
+        me: Boolean(sc.me)
+      });
+      // Recurse to copy grandchildren, great-grandchildren, etc.
+      copySubtree(sc.id, newId, genLevel + 1);
+    });
+  }
+
+  const baseGen = (Number(node.gen) || 0) + 1;
+  copySubtree(spouseNode.id, node.id, baseGen);
+
+  saveData();
+  // Always navigate to the tree that was just synced so the user sees the result
+  selectTree(treeKey);
+  openInfoPanel(nodeId);
+  showToast(`✅ Đã đồng bộ ${totalSynced} người (con, cháu, chắt...) từ ${getDisplayName(spouseNode, false)}!`);
+}
+
+function findCrossMatches(treeKey, node) {
+  if (!node || !node.name) return [];
+  const cleanName = stripLeadingTitle(node.name).toLowerCase();
+  const matches = [];
+  if (!cleanName) return matches;
+
+  for (const [k, t] of Object.entries(data)) {
+    if (k === treeKey) continue;
+    (t.nodes || []).forEach(otherNode => {
+      const otherClean = stripLeadingTitle(otherNode.name).toLowerCase();
+      if (otherClean && (otherClean === cleanName || otherNode.name.toLowerCase() === node.name.toLowerCase())) {
+        matches.push({ treeKey: k, treeLabel: t.label, node: otherNode });
+      }
+    });
+  }
+  return matches;
+}
+
+function syncTwoNodes(srcTree, srcId, dstTree, dstId) {
+  const src = data[srcTree]?.nodes.find(n => n.id === srcId);
+  const dst = data[dstTree]?.nodes.find(n => n.id === dstId);
+  if (!src || !dst) return;
+
+  dst.birth = src.birth || dst.birth;
+  dst.deceased = src.deceased !== undefined ? src.deceased : dst.deceased;
+  dst.spouse = src.spouse || dst.spouse;
+  if (src.spouseId && src.spouseTree) {
+    dst.spouseId = src.spouseId;
+    dst.spouseTree = src.spouseTree;
+  }
+  dst.gender = src.gender || dst.gender;
+  if (src.note) {
+    if (!dst.note) dst.note = src.note;
+    else if (!dst.note.includes(src.note)) dst.note += ' | ' + src.note;
+  }
+  saveData();
+  render();
+  openInfoPanel(srcId);
+  showToast(`✅ Đã đồng bộ thông tin sang [${data[dstTree].label}]!`);
+}
+
+function populateDatalists() {
+  const parentDl = document.getElementById('parentDatalist');
+  const spouseDl = document.getElementById('spouseDatalist');
+  
+  const allNodesMap = {};
+  for (const [tKey, tree] of Object.entries(data)) {
+    (tree.nodes || []).forEach(n => {
+      allNodesMap[n.id] = { ...n, _treeKey: tKey, _treeLabel: tree.label };
+    });
+  }
+
+  const parentOptions = [];
+  const spouseOptions = [];
+
+  for (const [tKey, tree] of Object.entries(data)) {
+    (tree.nodes || []).forEach(n => {
+      const disp = getDisplayName(n, false);
+      const parentNode = n.parent ? allNodesMap[n.parent] : null;
+      let parentInfo = '';
+      if (parentNode) {
+        parentInfo = `con ${getDisplayName(parentNode, false)}`;
+      } else if (n.note) {
+        const cleanNote = n.note.replace(/<[^>]*>/g, '').trim();
+        parentInfo = cleanNote.length > 25 ? cleanNote.substring(0, 25) + '...' : cleanNote;
+      }
+
+      const genStr = `Đời ${(Number(n.gen) || 0) + 1}`;
+      const desc = parentInfo
+        ? `${disp} (${parentInfo} - ${genStr} - ${tree.label})`
+        : `${disp} (${genStr} - ${tree.label})`;
+
+      // Parent datalist: value is human-readable desc§nodeId
+      const parentVal = `${desc}§${n.id}`;
+      parentOptions.push(`<option value="${parentVal}">`);
+
+      // Spouse datalist: value is the full human-readable desc§tKey:nodeId
+      // The §tKey:nodeId suffix is parsed by saveNode() to extract the ID link
+      // Browsers show value text as the suggestion, but the § part looks clean enough if short
+      const spouseVal = `${desc}§${tKey}:${n.id}`;
+      spouseOptions.push(`<option value="${spouseVal}">`);
+    });
+  }
+
+  if (parentDl) parentDl.innerHTML = parentOptions.join('');
+  if (spouseDl) {
+    spouseOptions.sort((a, b) => a.localeCompare(b, 'vi'));
+    spouseDl.innerHTML = spouseOptions.join('');
+  }
+}
+
+// Called when user types/selects in the parent field
+// Strips §nodeId suffix if present (from datalist value) and stores clean ID
+function onParentInput(inp) {
+  const val = inp.value;
+  const sepIdx = val.indexOf('§');
+  if (sepIdx !== -1) {
+    const displayPart = val.substring(0, sepIdx).trim();
+    const idPart = val.substring(sepIdx + 1).trim();
+    inp.value = displayPart;
+    document.getElementById('f_parentId').value = idPart;
+  } else {
+    // User typed manually — resolve by name/desc to find ID
+    document.getElementById('f_parentId').value = '';
+  }
+}
+
+// Called when user types/selects in the spouse field
+// Strips §tKey:nodeId suffix if present
+function onSpouseInput(inp) {
+  const val = inp.value;
+  const sepIdx = val.indexOf('§');
+  if (sepIdx !== -1) {
+    const displayPart = val.substring(0, sepIdx).trim();
+    const idPart = val.substring(sepIdx + 1).trim();
+    const idMatch = idPart.match(/^([a-zA-Z0-9_-]+):([a-zA-Z0-9_-]+)$/);
+    inp.value = displayPart;
+    if (idMatch) {
+      document.getElementById('f_spouseTree').value = idMatch[1];
+      document.getElementById('f_spouseId').value = idMatch[2];
+    } else {
+      document.getElementById('f_spouseTree').value = '';
+      document.getElementById('f_spouseId').value = '';
+    }
+  } else {
+    document.getElementById('f_spouseTree').value = '';
+    document.getElementById('f_spouseId').value = '';
+  }
+}
+
+function updateRelationLabel() {
+  // Use hidden parentId field first, else resolve by display value
+  const hiddenId = (document.getElementById('f_parentId')?.value || '').trim();
+  const pVal = (document.getElementById('f_parent')?.value || '').trim();
+  const lbl = document.getElementById('lbl_relation');
+  if (!lbl) return;
+  if (!pVal && !hiddenId) {
+    lbl.innerHTML = 'Mối quan hệ với Cha / Mẹ:';
+    return;
+  }
+  let parentObj = null;
+  const searchId = hiddenId || pVal;
+  for (const k of Object.keys(data)) {
+    parentObj = data[k].nodes.find(n => n.id === searchId || n.name === pVal || getDisplayName(n, false) === pVal);
+    if (parentObj) break;
+  }
+  const parentName = parentObj ? getDisplayName(parentObj, false) : pVal;
+  lbl.innerHTML = `Mối quan hệ với <strong style="color:var(--gold);">${parentName}</strong>:`;
+}
+
 function openAddModal() {
   editingId = null;
   document.getElementById('modalTitle').textContent = 'Thêm người thân';
   document.getElementById('btnDelete').style.display = 'none';
   clearForm();
   document.getElementById('f_tree').value = currentTree;
+  populateDatalists();
+  updateRelationLabel();
+  document.getElementById('syncMatchingBox')?.classList.add('hidden');
   document.getElementById('overlay').classList.remove('hidden');
 }
 
@@ -1257,42 +1833,119 @@ function openAddChildModal(parentId) {
   document.getElementById('btnDelete').style.display = 'none';
   clearForm();
   document.getElementById('f_tree').value = currentTree;
-  document.getElementById('f_parent').value = parentId;
-  document.getElementById('f_gen').value = (parent ? (parent.gen||0) + 1 : 1);
+  
+  if (parent) {
+    document.getElementById('f_parentId').value = parentId;
+    document.getElementById('f_parent').value = getDisplayName(parent, false);
+  } else {
+    document.getElementById('f_parentId').value = '';
+    document.getElementById('f_parent').value = parentId;
+  }
+  
+  document.getElementById('f_gen').value = (parent ? (Number(parent.gen)||0) + 1 : 1);
+  populateDatalists();
+  updateRelationLabel();
+  document.getElementById('syncMatchingBox')?.classList.add('hidden');
   document.getElementById('overlay').classList.remove('hidden');
 }
 
 function openEditModal(id) {
-  // find which tree
   let treeKey = currentTree;
   let node = null;
-  for (const key of Object.keys(data)) {
-    const found = data[key].nodes.find(n => n.id === id);
-    if (found) { node = found; treeKey = key; break; }
+  for (const k of Object.keys(data)) {
+    const f = data[k].nodes.find(n => n.id === id);
+    if (f) { node = f; treeKey = k; break; }
   }
   if (!node) return;
 
   editingId = id;
-  document.getElementById('modalTitle').textContent = 'Sửa thông tin';
-  document.getElementById('btnDelete').style.display = 'inline-block';
-  document.getElementById('f_name').value = node.name;
+  document.getElementById('modalTitle').textContent = 'Sửa thông tin: ' + getDisplayName(node, false);
+  document.getElementById('btnDelete').style.display = 'inline-flex';
+  document.getElementById('f_name').value = node.name || '';
   document.getElementById('f_title').value = node.title || '';
   document.getElementById('f_gender').value = node.gender || 'm';
   document.getElementById('f_birth').value = node.birth || '';
   document.getElementById('f_deceased').checked = Boolean(node.deceased);
   document.getElementById('f_tree').value = treeKey;
   document.getElementById('f_gen').value = node.gen !== undefined ? node.gen : '';
-  document.getElementById('f_parent').value = node.parent || '';
+  const parentNode = node.parent ? data[treeKey].nodes.find(n => n.id === node.parent) : null;
+  if (parentNode) {
+    document.getElementById('f_parentId').value = node.parent;
+    document.getElementById('f_parent').value = getDisplayName(parentNode, false);
+  } else {
+    document.getElementById('f_parentId').value = '';
+    document.getElementById('f_parent').value = node.parent || '';
+  }
+
+  // Format spouse field with explicit link descriptor if exists
+  // Value format: "Tên người (con ... - Đời X - Nhánh)§treeKey:nodeId"
+  function buildSpouseFieldValue(sp, spTreeKey) {
+    const pNode = sp.parent ? data[spTreeKey].nodes.find(p => p.id === sp.parent) : null;
+    const pInfo = pNode ? `con ${getDisplayName(pNode, false)}` : '';
+    const genStr = `Đời ${(Number(sp.gen) || 0) + 1}`;
+    const desc = pInfo
+      ? `${getDisplayName(sp, false)} (${pInfo} - ${genStr} - ${data[spTreeKey].label})`
+      : `${getDisplayName(sp, false)} (${genStr} - ${data[spTreeKey].label})`;
+    return `${desc}§${spTreeKey}:${sp.id}`;
+  }
+
+  if (node.spouseId && node.spouseTree && data[node.spouseTree]) {
+    const sp = data[node.spouseTree].nodes.find(n => n.id === node.spouseId);
+    document.getElementById('f_spouse').value = sp
+      ? buildSpouseFieldValue(sp, node.spouseTree)
+      : (node.spouse || '');
+  } else {
+    const spObj = findSpouseNode(node, treeKey);
+    if (spObj) {
+      document.getElementById('f_spouse').value = buildSpouseFieldValue(spObj.spouseNode, spObj.spouseTreeKey);
+    } else {
+      document.getElementById('f_spouse').value = node.spouse || '';
+    }
+  }
+
+  // Trigger input handler to parse the § encoding into hidden fields and clean the display value
+  const spouseInput = document.getElementById('f_spouse');
+  if (spouseInput.value) {
+    onSpouseInput(spouseInput);
+  }
+
+  document.getElementById('f_relation_type').value = node.relationType || '';
   document.getElementById('f_note').value = node.note || '';
+
+  populateDatalists();
+  updateRelationLabel();
+
+  // Populate cross matches in edit modal
+  const matches = findCrossMatches(treeKey, node);
+  const syncBox = document.getElementById('syncMatchingBox');
+  const syncList = document.getElementById('syncMatchingList');
+  if (syncBox && syncList) {
+    if (matches.length > 0) {
+      syncList.innerHTML = matches.map(m => `
+        <label class="sync-person-item">
+          <input type="checkbox" class="sync-target-check" value="${m.treeKey}:${m.node.id}" checked>
+          <span><strong>${getDisplayName(m.node, false)}</strong> (${m.treeLabel})</span>
+        </label>
+      `).join('');
+      syncBox.classList.remove('hidden');
+    } else {
+      syncBox.classList.add('hidden');
+    }
+  }
+
   document.getElementById('overlay').classList.remove('hidden');
 }
 
 function clearForm() {
-  ['f_name','f_title','f_birth','f_parent','f_gen','f_note'].forEach(id => {
-    document.getElementById(id).value = '';
+  ['f_name','f_title','f_birth','f_parent','f_spouse','f_gen','f_note', 'f_parentId', 'f_spouseId', 'f_spouseTree'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.value = '';
   });
   document.getElementById('f_gender').value = 'm';
   document.getElementById('f_deceased').checked = false;
+  document.getElementById('f_relation_type').value = '';
+  document.getElementById('syncMatchingBox')?.classList.add('hidden');
+  updateRelationLabel();
 }
 
 function closeModal() {
@@ -1301,46 +1954,141 @@ function closeModal() {
 }
 
 function saveNode() {
-  const name   = document.getElementById('f_name').value.trim();
-  const title  = document.getElementById('f_title').value.trim();
+  const name = document.getElementById('f_name').value.trim();
+  const title = document.getElementById('f_title').value.trim();
   const gender = document.getElementById('f_gender').value;
-  const birth  = document.getElementById('f_birth').value.trim();
-  const treeKey= document.getElementById('f_tree').value;
-  const gen    = parseInt(document.getElementById('f_gen').value) || 0;
-  const parent = document.getElementById('f_parent').value.trim() || null;
-  const note   = document.getElementById('f_note').value.trim();
+  const birth = document.getElementById('f_birth').value.trim();
+  const treeKey = document.getElementById('f_tree').value;
+  const gen = parseInt(document.getElementById('f_gen').value) || 0;
+  const parentHidden = document.getElementById('f_parentId').value.trim();
+  const parentRaw = document.getElementById('f_parent').value.trim();
+  // Prefer hidden ID if present, else fallback to typed value (might be name)
+  const parent = parentHidden || parentRaw || null;
+  
+  const spouseHiddenId = document.getElementById('f_spouseId').value.trim();
+  const spouseHiddenTree = document.getElementById('f_spouseTree').value.trim();
+  const spouseRaw = document.getElementById('f_spouse').value.trim();
+  
+  const relationType = document.getElementById('f_relation_type').value;
+  const note = document.getElementById('f_note').value.trim();
   const deceased = document.getElementById('f_deceased').checked;
 
-  if (!name) { showToast('Vui lòng nhập tên!'); return; }
+  if (!name) { showToast('Vui lòng nhập họ và tên!'); return; }
+
+  let spouseClean = spouseRaw;
+  let spouseId = spouseHiddenId || null;
+  let spouseTree = spouseHiddenTree || null;
+
+  // If no hidden IDs but there's a spouse name, try resolving by name
+  if (spouseRaw && !spouseId) {
+    // Check if it matches old "[tKey:nodeId]" format just in case
+    const spMatch = spouseRaw.match(/^\[([a-zA-Z0-9_-]+):([a-zA-Z0-9_-]+)\]\s*(.*)$/);
+    if (spMatch) {
+      spouseTree = spMatch[1];
+      spouseId = spMatch[2];
+      const rest = spMatch[3];
+      spouseClean = rest.split('(')[0].trim() || rest;
+    } else {
+      for (const [k, t] of Object.entries(data)) {
+        const found = t.nodes.find(n => n.id === spouseRaw
+          || n.name === spouseRaw
+          || getDisplayName(n, false) === spouseRaw
+        );
+        if (found) {
+          spouseId = found.id;
+          spouseTree = k;
+          break;
+        }
+      }
+    }
+  }
+
+  // Strip anything in parentheses for spouseClean if we linked it
+  if (spouseId && spouseClean.includes('(')) {
+    spouseClean = spouseClean.split('(')[0].trim();
+  }
+
+  let savedNodeId = editingId;
+  let syncedBranches = [];
 
   if (editingId) {
-    // Update
-    for (const key of Object.keys(data)) {
-      const idx = data[key].nodes.findIndex(n => n.id === editingId);
+    for (const k of Object.keys(data)) {
+      const idx = data[k].nodes.findIndex(n => n.id === editingId);
       if (idx !== -1) {
-        data[key].nodes[idx] = { ...data[key].nodes[idx], name, title, gender, birth, gen, parent, note, deceased };
+        data[k].nodes[idx] = {
+          ...data[k].nodes[idx],
+          name, title, gender, birth, gen, parent,
+          spouse: spouseClean,
+          spouseId: spouseId || undefined,
+          spouseTree: spouseTree || undefined,
+          relationType, note, deceased
+        };
         break;
       }
     }
   } else {
-    // Add new
-    const id = 'custom_' + Date.now();
-    data[treeKey].nodes.push({ id, name, title, gender, birth, gen, parent, note: note, deceased, me: false });
+    savedNodeId = 'custom_' + Date.now();
+    data[treeKey].nodes.push({
+      id: savedNodeId,
+      name, title, gender, birth, gen, parent,
+      spouse: spouseClean,
+      spouseId: spouseId || undefined,
+      spouseTree: spouseTree || undefined,
+      relationType, note, deceased, me: false
+    });
     currentTree = treeKey;
   }
 
-  saveData();
+  // Two-way spouse linking
+  if (spouseTree && spouseId && data[spouseTree]) {
+    const targetSpouse = data[spouseTree].nodes.find(n => n.id === spouseId);
+    if (targetSpouse) {
+      targetSpouse.spouse = name;
+      targetSpouse.spouseId = savedNodeId;
+      targetSpouse.spouseTree = treeKey;
+    }
+  }
+
+  // Cross sync to checked matching persons in other branches
+  document.querySelectorAll('.sync-target-check:checked').forEach(chk => {
+    const [tKey, targetId] = chk.value.split(':');
+    if (data[tKey]) {
+      const targetNode = data[tKey].nodes.find(n => n.id === targetId);
+      if (targetNode) {
+        targetNode.birth = birth || targetNode.birth;
+        targetNode.deceased = deceased;
+        targetNode.spouse = spouseClean || targetNode.spouse;
+        if (spouseId && spouseTree) {
+          targetNode.spouseId = spouseId;
+          targetNode.spouseTree = spouseTree;
+        }
+        targetNode.gender = gender;
+        if (note) {
+          if (!targetNode.note) targetNode.note = note;
+          else if (!targetNode.note.includes(note)) targetNode.note += ' | ' + note;
+        }
+        syncedBranches.push(data[tKey].label);
+      }
+    }
+  });
+
+  saveData(true);
   closeModal();
   render();
+
+  if (syncedBranches.length > 0) {
+    showToast(`✅ Đã lưu & đồng bộ sang: ${syncedBranches.join(', ')}!`);
+  } else {
+    showToast('Đã lưu thay đổi!');
+  }
 }
 
 function deleteCurrentNode() {
   if (!editingId) return;
-  if (!confirm('Xóa người này? Các con cháu sẽ mất kết nối cha/mẹ.')) return;
-  for (const key of Object.keys(data)) {
-    data[key].nodes = data[key].nodes.filter(n => n.id !== editingId);
-    // detach children
-    data[key].nodes.forEach(n => { if (n.parent === editingId) n.parent = null; });
+  if (!confirm('Xác nhận xóa người này khỏi gia phả?')) return;
+  for (const k of Object.keys(data)) {
+    data[k].nodes = data[k].nodes.filter(n => n.id !== editingId);
+    data[k].nodes.forEach(n => { if (n.parent === editingId) n.parent = null; });
   }
   saveData();
   closeModal();
@@ -1353,17 +2101,17 @@ function deleteCurrentNode() {
 // ────────────────────────────────────────────────────────────
 function setupSearch() {
   const input = document.getElementById('searchInput');
+  const resultsBox = document.getElementById('searchResults');
+  const list = document.getElementById('searchResultList');
+
   input.addEventListener('input', () => {
     const q = input.value.trim().toLowerCase();
-    const resultsBox = document.getElementById('searchResults');
-    const list = document.getElementById('searchResultList');
-
     if (!q) { resultsBox.classList.remove('active'); return; }
 
     const hits = [];
     for (const [key, tree] of Object.entries(data)) {
       tree.nodes.forEach(n => {
-        const hay = (getDisplayName(n, false) + ' ' + n.name + ' ' + (n.note||'')).toLowerCase();
+        const hay = `${getDisplayName(n, false)} ${n.name} ${n.spouse||''} ${n.note||''}`.toLowerCase();
         if (hay.includes(q)) {
           hits.push({ ...n, _tree: key, _treeLabel: tree.label, _treeIcon: tree.icon });
         }
@@ -1371,12 +2119,12 @@ function setupSearch() {
     }
 
     if (hits.length === 0) {
-      list.innerHTML = '<span style="color:var(--text-soft);font-size:0.82rem;">Không tìm thấy kết quả</span>';
+      list.innerHTML = '<span style="color:var(--text-soft);font-size:0.82rem;">Không tìm thấy kết quả phù hợp</span>';
     } else {
-      list.innerHTML = hits.slice(0, 20).map(h =>
+      list.innerHTML = hits.slice(0, 25).map(h =>
         `<div class="search-result-chip" onclick="jumpToResult('${h._tree}','${h.id}')">
           ${h._treeIcon} ${getDisplayName(h, false)}
-          <span>${h._treeLabel}</span>
+          <span style="font-size:0.72rem;opacity:0.7;">(${h._treeLabel})</span>
         </div>`
       ).join('');
     }
@@ -1385,7 +2133,7 @@ function setupSearch() {
 
   document.addEventListener('click', e => {
     if (!e.target.closest('#searchResults') && !e.target.closest('#searchInput')) {
-      document.getElementById('searchResults').classList.remove('active');
+      resultsBox.classList.remove('active');
     }
   });
 }
@@ -1395,7 +2143,6 @@ function jumpToResult(treeKey, id) {
   document.getElementById('searchInput').value = '';
   selectTree(treeKey);
   setTimeout(() => {
-    // expand path
     const nodes = data[treeKey].nodes;
     const map = {};
     nodes.forEach(n => { map[n.id] = n; });
@@ -1410,7 +2157,7 @@ function jumpToResult(treeKey, id) {
       if (el) {
         el.scrollIntoView({ behavior: 'smooth', block: 'center' });
         el.classList.add('highlighted');
-        setTimeout(() => el.classList.remove('highlighted'), 2000);
+        setTimeout(() => el.classList.remove('highlighted'), 2500);
       }
       openInfoPanel(id);
     }, 100);
@@ -1418,7 +2165,7 @@ function jumpToResult(treeKey, id) {
 }
 
 // ────────────────────────────────────────────────────────────
-// EXPORT / IMPORT
+// EXPORT / IMPORT JSON
 // ────────────────────────────────────────────────────────────
 function exportData() {
   const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
@@ -1426,7 +2173,7 @@ function exportData() {
   a.href = URL.createObjectURL(blob);
   a.download = 'gia-pha-' + new Date().toISOString().slice(0,10) + '.json';
   a.click();
-  showToast('Đã xuất file JSON!');
+  showToast('Đã xuất file JSON thành công!');
 }
 
 function importData(e) {
@@ -1439,11 +2186,137 @@ function importData(e) {
       data = parsed;
       saveData();
       render();
-      showToast('Nhập dữ liệu thành công!');
-    } catch { showToast('File không hợp lệ!'); }
+      showToast('Đã nạp dữ liệu JSON thành công!');
+    } catch { showToast('File JSON không hợp lệ!'); }
   };
   reader.readAsText(file);
   e.target.value = '';
+}
+
+// ────────────────────────────────────────────────────────────
+// CLOUD SYNC & ENCRYPTION (AES-256-GCM)
+// ────────────────────────────────────────────────────────────
+const GH_REPO = 'bigbaboi2/gia-pha-gia-dinh';
+const GH_FILE = 'data.enc';
+
+function openSyncModal() {
+  const tok = localStorage.getItem('gp-token') || '';
+  const pwd = localStorage.getItem('gp-pwd') || '';
+  document.getElementById('syncToken').value = tok;
+  document.getElementById('syncPwd').value = pwd;
+  document.getElementById('syncOverlay').classList.remove('hidden');
+}
+
+function closeSyncModal() {
+  document.getElementById('syncOverlay').classList.add('hidden');
+}
+
+async function _deriveKey(pwd, salt) {
+  const rawKey = await crypto.subtle.importKey(
+    'raw', new TextEncoder().encode(pwd), 'PBKDF2', false, ['deriveKey']
+  );
+  return crypto.subtle.deriveKey(
+    { name: 'PBKDF2', salt, iterations: 100000, hash: 'SHA-256' },
+    rawKey, { name: 'AES-GCM', length: 256 }, false, ['encrypt', 'decrypt']
+  );
+}
+
+async function encryptJSON(obj, pwd) {
+  const salt = crypto.getRandomValues(new Uint8Array(16));
+  const iv = crypto.getRandomValues(new Uint8Array(12));
+  const key = await _deriveKey(pwd, salt);
+  const encoded = new TextEncoder().encode(JSON.stringify(obj));
+  const ct = await crypto.subtle.encrypt({ name: 'AES-GCM', iv }, key, encoded);
+  const combined = new Uint8Array(28 + ct.byteLength);
+  combined.set(salt, 0);
+  combined.set(iv, 16);
+  combined.set(new Uint8Array(ct), 28);
+  return btoa(String.fromCharCode(...combined));
+}
+
+async function decryptJSON(b64, pwd) {
+  const binary = Uint8Array.from(atob(b64), c => c.charCodeAt(0));
+  const salt = binary.slice(0, 16);
+  const iv = binary.slice(16, 28);
+  const ct = binary.slice(28);
+  const key = await _deriveKey(pwd, salt);
+  const pt = await crypto.subtle.decrypt({ name: 'AES-GCM', iv }, key, ct);
+  return JSON.parse(new TextDecoder().decode(pt));
+}
+
+async function pushToGitHub() {
+  const tok = document.getElementById('syncToken').value.trim();
+  const pwd = document.getElementById('syncPwd').value.trim();
+  if (!tok) { showToast('Vui lòng nhập GitHub Token!'); return; }
+  if (!pwd) { showToast('Vui lòng nhập mật khẩu mã hóa!'); return; }
+
+  localStorage.setItem('gp-token', tok);
+  localStorage.setItem('gp-pwd', pwd);
+
+  showToast('Đang mã hóa & tải lên GitHub...');
+  try {
+    const encB64 = await encryptJSON(data, pwd);    // Get current SHA if exists
+    let sha = null;
+    try {
+      const getRes = await fetch(`https://api.github.com/repos/${GH_REPO}/contents/${GH_FILE}`, {
+        headers: { Authorization: `Bearer ${tok}`, Accept: 'application/vnd.github+json' }
+      });
+      if (getRes.ok) {
+        const fileInfo = await getRes.json();
+        sha = fileInfo.sha;
+      }
+    } catch(e) {}
+
+    const putRes = await fetch(`https://api.github.com/repos/${GH_REPO}/contents/${GH_FILE}`, {
+      method: 'PUT',
+      headers: {
+        Authorization: `Bearer ${tok}`,
+        'Content-Type': 'application/json',
+        Accept: 'application/vnd.github+json'
+      },
+      body: JSON.stringify({
+        message: 'Cập nhật gia phả ' + new Date().toLocaleString('vi-VN'),
+        content: btoa(unescape(encodeURIComponent(encB64))),
+        ...(sha ? { sha } : {})
+      })
+    });
+
+    if (putRes.ok) {
+      showToast('☁️ Đã lưu gia phả lên GitHub thành công!');
+      closeSyncModal();
+    } else {
+      const err = await putRes.json();
+      showToast('Lỗi GitHub: ' + (err.message || 'Thất bại'));
+    }
+  } catch(e) {
+    showToast('Lỗi: ' + e.message);
+  }
+}
+
+async function pullFromGitHub() {
+  const tok = document.getElementById('syncToken').value.trim();
+  const pwd = document.getElementById('syncPwd').value.trim();
+  if (!pwd) { showToast('Vui lòng nhập mật khẩu giải mã!'); return; }
+
+  showToast('Đang tải từ GitHub & giải mã...');
+  try {
+    const res = await fetch(`https://raw.githubusercontent.com/${GH_REPO}/main/${GH_FILE}?t=${Date.now()}`);
+    if (!res.ok) {
+      showToast('Chưa tìm thấy file data.enc trên GitHub!');
+      return;
+    }
+    const b64 = (await res.text()).trim();
+    const remoteData = await decryptJSON(b64, pwd);
+    data = remoteData;
+    saveData(true);
+    render();
+    localStorage.setItem('gp-pwd', pwd);
+    if (tok) localStorage.setItem('gp-token', tok);
+    showToast('✅ Đã đồng bộ dữ liệu mới nhất từ GitHub!');
+    closeSyncModal();
+  } catch(e) {
+    showToast('⚠️ Lỗi: Sai mật khẩu hoặc dữ liệu chưa đúng!');
+  }
 }
 
 // ────────────────────────────────────────────────────────────
@@ -1455,17 +2328,16 @@ function showToast(msg) {
   t.textContent = msg;
   t.classList.add('show');
   clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => t.classList.remove('show'), 2200);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 2600);
 }
 
 // ────────────────────────────────────────────────────────────
-// INIT
+// STARTUP
 // ────────────────────────────────────────────────────────────
+initThemeAndSidebar();
 loadData();
-try { setupSearch(); } catch (e) { /* Search is optional when a file viewer limits scripting. */ }
-try { render(); } catch (e) {
-  document.getElementById('treeView').innerHTML = '<div style="padding:24px;font:16px Arial,sans-serif;color:#2a2318;">Không thể hiển thị sơ đồ trong trình xem tệp này. Hãy mở file bằng Safari hoặc Chrome.</div>';
-}
+setupSearch();
+render();
 </script>
 </body>
 </html>
